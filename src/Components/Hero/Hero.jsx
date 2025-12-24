@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import coolerImg from "../../assets/cooler.webp";
-import chimminyImg from "../../assets/chimminy.jpeg";
-import dinnersetImg from "../../assets/dinnerset.jpeg";
-import indectionstoveImg from "../../assets/indectionstove.jpeg";
-import ovenImg from "../../assets/oven.jpeg";
-import nonsticcasaroleImg from "../../assets/nonsticcasarole.jpeg";
+import coolerImg from "../../Assets/cooler.webp";
+import chimminyImg from "../../Assets/chimminy.jpeg";
+import dinnersetImg from "../../Assets/dinnerset.jpeg";
+import indectionstoveImg from "../../Assets/indectionstove.jpeg";
+import ovenImg from "../../Assets/oven.jpeg";
+import nonsticcasaroleImg from "../../Assets/nonsticcasarole.jpeg";
 import { useNavigate } from 'react-router-dom';
 
 const ImageList = [
