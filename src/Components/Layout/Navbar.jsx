@@ -397,7 +397,7 @@
 // export default Navbar;
 
 import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaHeart, FaSearch } from "react-icons/fa";
 import { useEffect } from "react";
 
@@ -406,6 +406,19 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
 const [wishlistCount, setWishlistCount] = useState(0);
+const navigate = useNavigate();
+
+
+
+const [searchTerm, setSearchTerm] = useState("");
+
+const handleSearch = (e) => {
+  e.preventDefault(); // prevent page reload
+  if (searchTerm.trim() === "") return;
+  // Navigate to /search?q=searchTerm
+  navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
+};
+
 
 
  useEffect(() => {
@@ -442,16 +455,21 @@ const [wishlistCount, setWishlistCount] = useState(0);
           </Link>
 
           {/* Search */}
-          <div className="hidden md:flex items-center bg-white rounded-lg overflow-hidden shadow-sm">
-            <input
-              type="text"
-              placeholder="Search products..."
-              className="px-4 py-2 w-70 focus:outline-none"
-            />
-            <button className="px-4 py-2  focus:outline-none">
-              <FaSearch size={20} />
-            </button>
-          </div>
+         <div className="hidden md:flex items-center bg-white rounded-lg overflow-hidden shadow-sm">
+  <form onSubmit={handleSearch} className="flex w-full">
+    <input
+      type="text"
+      placeholder="Search products..."
+      className="px-4 py-2 w-full focus:outline-none"
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+    />
+    <button type="submit" className="px-4 py-2 focus:outline-none">
+      <FaSearch size={20} />
+    </button>
+  </form>
+</div>
+
         </div>
       </div>
 

@@ -153,6 +153,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useCart } from "../../Contexts/CartContext"; // import cart context
 import { useAuth } from "../../Contexts/AuthContext"; // auth check
+import { FaHeart, FaShoppingCart } from "react-icons/fa";
 
 
 function ProductDetails() {
@@ -197,6 +198,25 @@ function ProductDetails() {
   if (loading) return <div className="h-screen flex items-center justify-center text-gray-500">Loading product details...</div>;
   if (!product) return <div className="h-screen flex items-center justify-center text-red-500">Product not found</div>;
 
+
+
+const handleAddToWishlist = () => {
+  const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+  const exists = wishlist.find(item => item.id === product.id);
+
+  if (exists) {
+    alert("Already in wishlist");
+    return;
+  }
+
+  wishlist.push(product);
+  localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  alert("Added to wishlist ❤️");
+};
+
+
+
+
   return (
     <section className="py-12 bg-gray-50">
       <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -217,8 +237,14 @@ function ProductDetails() {
               className="px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition"
               onClick={handleAddToCart}
             >
-              Add to Cart 🛒
+               <FaShoppingCart/>
             </button>
+             <button
+              className="px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition"
+    onClick={handleAddToWishlist}
+  >
+    <FaHeart/>
+  </button>
           </div>
 
           <div className="mt-8 border-t pt-6">

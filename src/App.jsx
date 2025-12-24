@@ -12,12 +12,10 @@ import Products from './Components/Products/Products';
 import ProductDetails from './Components/Products/ProductsDetail';
 import Wishlist from './Components/Products/Wishlist';
 import Checkout from './Components/Products/Checkout';
-import { useAuth } from "./Contexts/AuthContext";
+import SearchResults from './Components/Layout/SearchResults';
 
 
 function App() {
-    const { isAuthenticated, loadingAuth } = useAuth();
-  if (loadingAuth) return <div>Loading...</div>;
 
   return (
    
@@ -33,6 +31,7 @@ function App() {
           <Route path="/products/:id" element={<ProductDetails />} />
           <Route path="wishlist" element={<Wishlist/>}/>
           <Route path="checkout" element={<Checkout/>}/>
+          <Route path="/search" element={<SearchResults />} />
         </Routes>
         
   );
