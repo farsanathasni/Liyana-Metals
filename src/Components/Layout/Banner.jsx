@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function Banner() {
+  const navigate=useNavigate()
   return (
 <section className="py-15 bg-gray-50">
   <div className="max-w-5xl mx-auto px-6">
@@ -26,7 +28,9 @@ function Banner() {
           kitchen essentials. Hurry, offers end soon!
         </p>
 
-        <button className="mt-6 bg-white text-amber-700 font-semibold px-7 py-3 rounded-lg hover:bg-gray-100 transition">
+        <button className="mt-6 bg-white text-amber-700 font-semibold px-7 py-3 rounded-lg hover:bg-gray-100 transition"
+        onClick={()=>navigate("/products")}
+        >
           Shop Now 🎁
         </button>
       </div>

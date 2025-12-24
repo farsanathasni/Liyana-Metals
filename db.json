@@ -290,6 +290,12 @@
       "image": "https://i.pinimg.com/1200x/91/d5/76/91d5763a7b02fa42da31ee0e72e80cd2.jpg",
       "category": "Kitchen Tools",
       "quantity": 7
+    },
+    {
+      "id": "41fd",
+      "productId": 1,
+      "price": 299,
+      "quantity": 2
     }
   ]
 }

@@ -5,6 +5,7 @@ import dinnersetImg from "../../assets/dinnerset.jpeg";
 import indectionstoveImg from "../../assets/indectionstove.jpeg";
 import ovenImg from "../../assets/oven.jpeg";
 import nonsticcasaroleImg from "../../assets/nonsticcasarole.jpeg";
+import { useNavigate } from 'react-router-dom';
 
 const ImageList = [
   {
@@ -52,6 +53,8 @@ const ImageList = [
 ];
 
 function Hero() {
+
+  const navigate=useNavigate()
  
   return (
     <section className="bg-gray-50 py-10">
@@ -95,7 +98,9 @@ function Hero() {
                   <p className="mt-2 text-sm text-gray-600">
                     {item.description}
                   </p>
-                  <button className="mt-4 w-full bg-amber-600 text-white py-2 rounded-lg hover:bg-amber-700 transition">
+                  <button className="mt-4 w-full bg-amber-600 text-white py-2 rounded-lg hover:bg-amber-700 transition"
+                  onClick={()=>navigate("/products")}
+                  >
                     Shop Now
                   </button>
                 </div>
