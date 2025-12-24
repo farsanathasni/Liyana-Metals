@@ -1,0 +1,295 @@
+{
+  "users": [
+    {
+      "id": "1766388730774",
+      "name": "Irfad",
+      "email": "ahmedirfad8@gmail.com",
+      "password": "Irfad123%"
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "name": "Non-Stick Fry Pan",
+      "price": "₹399",
+      "category": "Cookware",
+      "image": "https://i.pinimg.com/736x/82/97/de/8297de4208b89baa56916bc21affd85d.jpg",
+      "description": "Premium non-stick fry pan for healthy cooking",
+      "stock": 25
+    },
+    {
+      "id": "2",
+      "name": "Pressure Cooker",
+      "price": "₹1,299",
+      "category": "Cookware",
+      "image": "https://i.pinimg.com/736x/26/c5/6c/26c56c94fe6e42e6a63a707c49833b19.jpg",
+      "description": "Stainless steel pressure cooker, 3 liters capacity",
+      "stock": 15
+    },
+    {
+      "id": "3",
+      "name": "Induction stove",
+      "price": "₹2,499",
+      "category": "Cooktop & Chimney",
+      "image": "https://i.pinimg.com/1200x/c0/88/44/c08844226ef865017c64bc6566577303.jpg",
+      "description": "2000W induction cooktop with auto shut-off",
+      "stock": 10
+    },
+    {
+      "id": "4",
+      "name": "Kitchen Chimney",
+      "price": "₹8,999",
+      "category": "Cooktop & Chimney",
+      "image": "https://i.pinimg.com/736x/cd/e0/c7/cde0c7b7e1b2aec38c681bb29235e06f.jpg",
+      "description": "Auto-clean chimney with baffle filter",
+      "stock": 8
+    },
+    {
+      "id": "5",
+      "name": "Chef's Knife Set",
+      "price": "₹899",
+      "category": "Kitchen Tools",
+      "image": "https://i.pinimg.com/1200x/a9/37/dd/a937dd8ebd7772add50a265db48eccd9.jpg",
+      "description": "Professional 3-piece knife set",
+      "stock": 20
+    },
+    {
+      "id": "6",
+      "name": "Blender Mixer Grinder",
+      "price": "₹3,499",
+      "category": "Appliances",
+      "image": "https://i.pinimg.com/1200x/d1/5a/2d/d15a2d79a512787a6f8bc0e378cef7a1.jpg",
+      "description": "3-in-1 mixer grinder with 3 jars",
+      "stock": 12
+    },
+    {
+      "id": "7",
+      "name": "Stainless Steel Dinner Set",
+      "price": "₹4,999",
+      "category": "Cookware",
+      "image": "https://i.pinimg.com/736x/91/bf/79/91bf79da9787a2b220eece0545b5a388.jpg",
+      "description": "16-piece  | Plates, Glasses, Bowls, Spoons",
+      "stock": 5
+    },
+    {
+      "id": "8",
+      "name": "Microwave Oven",
+      "price": "₹6,999",
+      "category": "Appliances",
+      "image": "https://i.pinimg.com/736x/d6/99/30/d69930a0cbf27b4f9842cebdb990cc15.jpg",
+      "description": "20L convection microwave oven",
+      "stock": 7
+    },
+    {
+      "id": "9",
+      "name": "Gas Stove",
+      "price": "₹3,499",
+      "category": "Cooktop & Chimney",
+      "image": "https://i.pinimg.com/736x/2e/b9/04/2eb904f7cd31c4b3eeedc1b1c2ab8bf7.jpg",
+      "description": "2-burner auto-ignition gas stove",
+      "stock": 9
+    },
+    {
+      "id": "10",
+      "name": "Electric Kettle",
+      "price": "₹999",
+      "category": "Appliances",
+      "image": "https://i.pinimg.com/1200x/52/89/cf/5289cfefcb257dcd2eb0f556686e6c9b.jpg",
+      "description": "1.5L stainless steel electric kettle",
+      "stock": 18
+    },
+    {
+      "id": "11",
+      "name": "Spatula Set",
+      "price": "₹249",
+      "category": "Kitchen Tools",
+      "image": "https://i.pinimg.com/1200x/91/d5/76/91d5763a7b02fa42da31ee0e72e80cd2.jpg",
+      "description": "8-piece silicone kitchen utensil set",
+      "stock": 30
+    },
+    {
+      "id": "12",
+      "name": "Plastic Grocery Container",
+      "price": "₹199",
+      "category": "Homeware",
+      "image": "https://i.pinimg.com/736x/6c/27/a5/6c27a59d908fbe6e83c4a12eeb89b0b9.jpg",
+      "description": "Airtight plastic container for groceries",
+      "stock": 40
+    },
+    {
+      "id": "13",
+      "name": "  Grilling pan",
+      "price": "₹1,899",
+      "category": "Appliances",
+      "image": "https://i.pinimg.com/736x/8e/01/71/8e0171ea693916113ad5b46240d0a57e.jpg",
+      "description": "Portable steel barbecue grill for outdoor cooking",
+      "stock": 6
+    },
+    {
+      "id": "14",
+      "name": "Chopper",
+      "price": "₹499",
+      "category": "Kitchen Tools",
+      "image": "https://i.pinimg.com/736x/bb/61/d8/bb61d8585d991b28a14473455b9759e4.jpg",
+      "description": "Manual vegetable chopper with multiple blades",
+      "stock": 25
+    },
+    {
+      "id": "15",
+      "name": "Wooden Chopping Board",
+      "price": "₹349",
+      "category": "Kitchen Tools",
+      "image": "https://i.pinimg.com/736x/a8/48/7e/a8487e1ee3e2ab2df913b3b748de1aec.jpg",
+      "description": "Premium wooden chopping board",
+      "stock": 22
+    },
+    {
+      "id": "16",
+      "name": "Coffee Mug",
+      "price": "₹149",
+      "category": "Homeware",
+      "image": "https://i.pinimg.com/736x/bb/f9/03/bbf90307a0b38f6a255dc18828eb47a7.jpg",
+      "description": "Ceramic coffee mug with handle",
+      "stock": 50
+    },
+    {
+      "id": "17",
+      "name": "Air Cooler",
+      "price": "₹5,999",
+      "category": "Home Appliances",
+      "image": "https://i.pinimg.com/1200x/07/de/3b/07de3bf288517be98b2ba1b86b445057.jpg",
+      "description": "Desert air cooler with water tank",
+      "stock": 4
+    },
+    {
+      "id": "18",
+      "name": "Dinner Set",
+      "price": "₹1,799",
+      "category": "Homeware",
+      "image": "https://vadiraja.com/wp-content/uploads/2020/11/Borosil-9-2.jpg",
+      "description": "24-piece ceramic dinner set",
+      "stock": 8
+    },
+    {
+      "id": "19",
+      "name": "Non-Stick Dosa Tawa",
+      "price": "₹449",
+      "category": "Cookware",
+      "image": "https://i.pinimg.com/736x/b3/00/22/b300229801daf0a6d116d12be9adfc54.jpg",
+      "description": "Non-stick dosa tawa for perfect dosas",
+      "stock": 20
+    },
+    {
+      "id": "20",
+      "name": "Ceiling Fan",
+      "price": "₹1,299",
+      "category": "Home Appliances",
+      "image": "https://i.pinimg.com/1200x/68/22/76/6822768e33f24a5b0726b154ac3be8c5.jpg",
+      "description": "3-speed table fan with oscillation",
+      "stock": 15
+    },
+    {
+      "id": "21",
+      "name": "Juice Glass",
+      "price": "₹299",
+      "category": "Homeware",
+      "image": "https://i.pinimg.com/736x/ad/df/68/addf6811028c8894e44d4cb0fc5b0a64.jpg",
+      "description": "Set of 6 tempered glass juice glasses",
+      "stock": 35
+    },
+    {
+      "id": "22",
+      "name": "Non-Stick Casserole",
+      "price": "₹1,599",
+      "category": "Cookware",
+      "image": "https://i.pinimg.com/736x/fa/df/66/fadf66c86df632cfe5626a6094ce9b68.jpg",
+      "description": "Set 3  Non-stick casserole",
+      "stock": 12
+    },
+    {
+      "id": "23",
+      "name": "Rice Cooker",
+      "price": "₹1,899",
+      "category": "Appliances",
+      "image": "https://i.pinimg.com/736x/31/ef/9b/31ef9bef942098987ba27bd884f5fcdf.jpg",
+      "description": "Automatic rice cooker with keep warm function",
+      "stock": 10
+    },
+    {
+      "id": "24",
+      "name": "Saucepan",
+      "price": "₹599",
+      "category": "Cookware",
+      "image": "https://i.pinimg.com/736x/e5/a3/58/e5a3586d2943c35bedb44fff6592080a.jpg",
+      "description": "Stainless steel saucepan with lid",
+      "stock": 18
+    },
+    {
+      "id": "25",
+      "name": "Water Filter",
+      "price": "₹3,999",
+      "category": "Home Appliances",
+      "image": "https://i.pinimg.com/1200x/ff/86/67/ff8667251358c0e7e8a17f3198b1135f.jpg",
+      "description": "RO water filter with UV protection",
+      "stock": 5
+    },
+    {
+      "id": "26",
+      "name": "Water Heater",
+      "price": "₹4,499",
+      "category": "Home Appliances",
+      "image": "https://i.pinimg.com/736x/1d/65/db/1d65dbfda0725660e14a3f0ccff9ce5e.jpg",
+      "description": "Instant geyser water heater",
+      "stock": 7
+    }
+  ],
+  "cart": [
+    {
+      "id": "eb12",
+      "productId": "1",
+      "name": "Non-Stick Fry Pan",
+      "price": "₹399",
+      "description": "Premium non-stick fry pan for healthy cooking",
+      "image": "https://i.pinimg.com/736x/82/97/de/8297de4208b89baa56916bc21affd85d.jpg",
+      "category": "Cookware",
+      "quantity": 4
+    },
+    {
+      "id": "3875",
+      "productId": "5",
+      "name": "Chef's Knife Set",
+      "price": "₹899",
+      "description": "Professional 3-piece knife set",
+      "image": "https://i.pinimg.com/1200x/a9/37/dd/a937dd8ebd7772add50a265db48eccd9.jpg",
+      "category": "Kitchen Tools",
+      "quantity": 4
+    },
+    {
+      "id": "d6e1",
+      "productId": "24",
+      "name": "Saucepan",
+      "price": "₹599",
+      "image": "https://i.pinimg.com/736x/e5/a3/58/e5a3586d2943c35bedb44fff6592080a.jpg",
+      "category": "Cookware",
+      "quantity": 3
+    },
+    {
+      "id": "0b95",
+      "productId": "7",
+      "name": "Stainless Steel Dinner Set",
+      "price": "₹4,999",
+      "image": "https://i.pinimg.com/736x/91/bf/79/91bf79da9787a2b220eece0545b5a388.jpg",
+      "category": "Cookware",
+      "quantity": 1
+    },
+    {
+      "id": "9bfe",
+      "productId": "11",
+      "name": "Spatula Set",
+      "price": "₹249",
+      "image": "https://i.pinimg.com/1200x/91/d5/76/91d5763a7b02fa42da31ee0e72e80cd2.jpg",
+      "category": "Kitchen Tools",
+      "quantity": 7
+    }
+  ]
+}
