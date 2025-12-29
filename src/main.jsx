@@ -7,6 +7,7 @@ import { AuthProvider } from "./Contexts/AuthContext";
 import { CartProvider } from "./Contexts/CartContext";
 import { OrderProvider } from "./Contexts/OrderContext";
 import { SearchProvider } from "./Contexts/SerchContext";
+import { WishlistProvider } from "./Contexts/WishList";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -14,7 +15,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <CartProvider>
         <OrderProvider>
           <SearchProvider>
+            <WishlistProvider>
         <App />
+        </WishlistProvider>
         </SearchProvider>
         </OrderProvider>
       </CartProvider>
