@@ -1,42 +1,65 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
+import { useAuth } from "./AuthContext";
 
 const CartContext = createContext();
 export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
+  const { user, isAuthenticated, loadingAuth } = useAuth();
   const [cart, setCart] = useState([]);
 
-
+  // 🔹 Fetch cart USER-WISE
   useEffect(() => {
+    if (loadingAuth) return;
+
+    if (!isAuthenticated || !user) {
+      setCart([]);
+      return;
+    }
+
     const fetchCart = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/cart");
+        const res = await axios.get(
+          `http://localhost:3001/cart?userId=${user.id}`
+        );
         setCart(res.data);
       } catch (err) {
-        console.error("Failed to load cart from DB, using localStorage", err);
-        const localCart = JSON.parse(localStorage.getItem("cart") || "[]");
-        setCart(localCart);
+        console.error("Failed to load cart", err);
       }
     };
+
     fetchCart();
-  }, []);
+  }, [user, isAuthenticated, loadingAuth]);
 
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
-
+  // 🔹 Add to cart
   const addToCart = async (product) => {
-    const existing = cart.find(item => item.productId === product.id);
+    if (!user) return;
+
+    const existing = cart.find(
+      item => item.productId === product.id && item.userId === user.id
+    );
+
     if (existing) {
       try {
-        await axios.patch("http://localhost:3001/cart/${existing.id}", { quantity: existing.quantity + 1 });
-        setCart(cart.map(item => item.productId === product.id ? { ...item, quantity: item.quantity + 1 } : item));
+        await axios.patch(
+          `http://localhost:3001/cart/${existing.id}`,
+          { quantity: existing.quantity + 1 }
+        );
+
+        setCart(
+          cart.map(item =>
+            item.id === existing.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          )
+        );
       } catch (err) {
-        console.error("Failed to update cart in DB", err);
+        console.error("Failed to update cart", err);
       }
     } else {
       const newItem = {
+        userId: user.id,
         productId: product.id,
         name: product.name,
         price: product.price,
@@ -44,43 +67,60 @@ export const CartProvider = ({ children }) => {
         category: product.category,
         quantity: 1
       };
+
       try {
-        const res = await axios.post("http://localhost:3001/cart", newItem);
+        const res = await axios.post(
+          "http://localhost:3001/cart",
+          newItem
+        );
         setCart([...cart, res.data]);
       } catch (err) {
-        console.error("Failed to add cart in DB", err);
+        console.error("Failed to add cart", err);
       }
     }
   };
 
-  const removeFromCart = async (productId) => {
-    const item = cart.find(c => c.productId === productId);
-    if (!item) return;
-    try {
-await axios.delete(`http://localhost:3001/cart/${item.id}`);
-      setCart(cart.filter(c => c.productId !== productId));
-    } catch (err) {
-      console.error("Failed to remove from DB cart", err);
-    }
-  };
+  // 🔹 Remove from cart
+ const removeFromCart = async (productId) => {
+  if (!user) return;
 
-const totalPrice = cart.reduce((total, item) => {
-  const priceNumber =
-    typeof item.price === "string"
-      ? Number(item.price.replace("₹", "").replace(",", ""))
-      : item.price;
+  const item = cart.find(
+    c => c.productId === productId && c.userId === user.id
+  );
+  if (!item) return;
 
-  return total + priceNumber * item.quantity;
-}, 0);
-
-const clearCart = () => {
-  setCart([]);
-  localStorage.removeItem("cart");
+  try {
+    await axios.delete(`http://localhost:3001/cart/${item.id}`);
+    setCart(cart.filter(c => c.id !== item.id));
+  } catch (err) {
+    console.error("Failed to remove cart item", err);
+  }
 };
 
+  // 🔹 Total price
+  const totalPrice = cart.reduce((total, item) => {
+    const priceNumber =
+      typeof item.price === "string"
+        ? Number(item.price.replace("₹", "").replace(/,/g, ""))
+        : item.price;
+
+    return total + priceNumber * item.quantity;
+  }, 0);
+
+  // 🔹 Clear cart (after order)
+  const clearCart = async () => {
+    await Promise.all(
+  cart.map(item =>
+    axios.delete(`http://localhost:3001/cart/${item.id}`)
+  )
+);
+setCart([]);
+  };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, totalPrice, clearCart }}>
+    <CartContext.Provider
+      value={{ cart, addToCart, removeFromCart, totalPrice, clearCart }}
+    >
       {children}
     </CartContext.Provider>
   );

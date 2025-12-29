@@ -7,7 +7,7 @@ import { useEffect } from "react";
 // import { useAuth } from "../Contexts/AuthContext"; 
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../Contexts/AuthContext";
-import { useSearch } from "../../Contexts/SerchContext";
+import { useCart } from "../../Contexts/CartContext";
 
 
 
@@ -17,7 +17,8 @@ function Navbar() {
   const [cartCount, setCartCount] = useState(0);
 const [wishlistCount, setWishlistCount] = useState(0);
 const { user, isAuthenticated, logout } = useAuth();
-  const { searchTerm, setSearchTerm } = useSearch();
+const { cart } = useCart();
+const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 const navigate = useNavigate();
 
 
@@ -93,16 +94,16 @@ const navigate = useNavigate();
   </div>
 </NavLink></li> 
 
-<li><NavLink to="/cart" className={linkStyle}>
+<NavLink to="/cart" className={linkStyle}>
   <div className="relative">
     <FaShoppingCart size={20} />
-    {cartCount > 0 && (
+    {totalItems > 0 && (
       <span className="absolute -top-2 -right-2 bg-amber-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-        {cartCount}
+        {totalItems}
       </span>
     )}
   </div>
-</NavLink></li>
+</NavLink>
 
 <li>
     <NavLink to="/orders" className={linkStyle}>

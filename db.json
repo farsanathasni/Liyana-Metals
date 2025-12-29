@@ -257,26 +257,35 @@
   ],
   "cart": [
     {
-      "id": "a0a6",
-      "productId": "3",
-      "name": "Induction stove",
-      "price": "₹2,499",
-      "image": "https://i.pinimg.com/1200x/c0/88/44/c08844226ef865017c64bc6566577303.jpg",
-      "category": "Cooktop & Chimney",
-      "quantity": 1
+      "id": "6c60",
+      "userId": "1766388730774",
+      "productId": 1,
+      "price": 299,
+      "image": "/src/Assets/airtightjar.jpeg",
+      "quantity": 2
     },
     {
-      "id": "ef73",
+      "id": "96cb",
+      "userId": "1766388730774",
       "productId": 2,
       "price": 399,
-      "image": "/src/assets/farypan.jpeg",
+      "image": "/src/Assets/farypan.jpeg",
+      "quantity": 2
+    },
+    {
+      "id": "0e66",
+      "userId": "1766388730774",
+      "productId": 3,
+      "price": 275,
+      "image": "/src/Assets/knife1.jpeg",
       "quantity": 1
     },
     {
-      "id": "c3ce",
+      "id": "ea7e",
+      "userId": "1766388730774",
       "productId": 4,
       "price": 1599,
-      "image": "/src/assets/nonsticcasarole.jpeg",
+      "image": "/src/Assets/nonsticcasarole.jpeg",
       "quantity": 1
     }
   ],
@@ -594,6 +603,30 @@
       "payment": "COD",
       "status": "placed",
       "createdAt": "2025-12-29T07:09:04.800Z"
+    },
+    {
+      "id": "99d1",
+      "userId": "1766814441668",
+      "items": [
+        {
+          "id": "b7b1",
+          "userId": "1766814441668",
+          "productId": 4,
+          "price": 1599,
+          "image": "/src/Assets/nonsticcasarole.jpeg",
+          "quantity": 1
+        }
+      ],
+      "total": 1599,
+      "customer": {
+        "name": "Farsana",
+        "address": "kunnumpuram",
+        "phone": "04545454545",
+        "payment": "COD"
+      },
+      "payment": "COD",
+      "status": "placed",
+      "createdAt": "2025-12-29T10:31:00.935Z"
     }
   ]
 }
