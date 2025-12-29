@@ -6,13 +6,12 @@ export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
-  const API_URL = "http://localhost:3001";
 
-  // Load cart from DB (or fallback to localStorage)
+
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const res = await axios.get(`${API_URL}/cart`);
+        const res = await axios.get("http://localhost:3001/cart");
         setCart(res.data);
       } catch (err) {
         console.error("Failed to load cart from DB, using localStorage", err);
@@ -23,7 +22,6 @@ export const CartProvider = ({ children }) => {
     fetchCart();
   }, []);
 
-  // Sync cart to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
@@ -31,9 +29,8 @@ export const CartProvider = ({ children }) => {
   const addToCart = async (product) => {
     const existing = cart.find(item => item.productId === product.id);
     if (existing) {
-      // Update quantity in DB
       try {
-        await axios.patch(`${API_URL}/cart/${existing.id}`, { quantity: existing.quantity + 1 });
+        await axios.patch("http://localhost:3001/cart/${existing.id}", { quantity: existing.quantity + 1 });
         setCart(cart.map(item => item.productId === product.id ? { ...item, quantity: item.quantity + 1 } : item));
       } catch (err) {
         console.error("Failed to update cart in DB", err);
@@ -48,7 +45,7 @@ export const CartProvider = ({ children }) => {
         quantity: 1
       };
       try {
-        const res = await axios.post(`${API_URL}/cart`, newItem);
+        const res = await axios.post("http://localhost:3001/cart", newItem);
         setCart([...cart, res.data]);
       } catch (err) {
         console.error("Failed to add cart in DB", err);
@@ -60,17 +57,30 @@ export const CartProvider = ({ children }) => {
     const item = cart.find(c => c.productId === productId);
     if (!item) return;
     try {
-      await axios.delete(`${API_URL}/cart/${item.id}`);
+await axios.delete(`http://localhost:3001/cart/${item.id}`);
       setCart(cart.filter(c => c.productId !== productId));
     } catch (err) {
       console.error("Failed to remove from DB cart", err);
     }
   };
 
-  const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+const totalPrice = cart.reduce((total, item) => {
+  const priceNumber =
+    typeof item.price === "string"
+      ? Number(item.price.replace("₹", "").replace(",", ""))
+      : item.price;
+
+  return total + priceNumber * item.quantity;
+}, 0);
+
+const clearCart = () => {
+  setCart([]);
+  localStorage.removeItem("cart");
+};
+
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, totalPrice }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, totalPrice, clearCart }}>
       {children}
     </CartContext.Provider>
   );

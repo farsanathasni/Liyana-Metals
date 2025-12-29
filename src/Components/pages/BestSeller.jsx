@@ -11,28 +11,28 @@ import nonsticcasaroleImg from "../../assets/nonsticcasarole.jpeg";
 const Productsdata = [
   {
     id: 1,
-    img: airtightjarImg,
+    image: airtightjarImg,
     title: "Airtight Storage Jar",
     price: 299,
     rating: 5.0,
   },
   {
     id: 2,
-    img: farypanImg,
+    image: farypanImg,
     title: "Non-Stick Fry Pan",
     price: 399,
     rating: 5.0,
   },
   {
     id: 3,
-    img: knife1Img,
+    image: knife1Img,
     title: "Premium Kitchen Knife",
     price: 275,
     rating: 4.5,
   },
   {
     id: 4,
-    img: nonsticcasaroleImg,
+    image: nonsticcasaroleImg,
     title: "Non-Stick Casserole",
     price: 1599,
     rating: 4.0,
@@ -73,7 +73,9 @@ function BestSeller() {
             <div key={item.id} className="bg-white rounded-xl shadow-md">
 
               <div className="h-52 flex items-center justify-center">
-                <img src={item.img} alt={item.title} className="max-h-44" />
+                <img src={item.image} alt={item.title} className="max-h-44" 
+                 onError={(e) => e.target.src = "/assets/fallback.png"}
+                />
               </div>
 
               <div className="p-4 text-center">

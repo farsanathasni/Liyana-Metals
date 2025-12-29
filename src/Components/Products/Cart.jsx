@@ -2,13 +2,14 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../Contexts/CartContext";
 import { useAuth } from "../../Contexts/AuthContext";
+import Footer from "../Layout/Footer";
+import Navbar from "../Layout/Navbar";
 
 function Cart() {
   const navigate = useNavigate();
   const { cart, removeFromCart, totalPrice } = useCart();
 const { isAuthenticated } = useAuth();
 
-  // If user is not logged in, show login/register prompt
  
 if (!isAuthenticated) {
   return (
@@ -31,8 +32,10 @@ if (!isAuthenticated) {
     </div>
   );
 }
-  // Logged-in users see normal cart
   return (
+    <>
+<Navbar/>
+
     <div className="max-w-5xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
 
@@ -84,7 +87,7 @@ if (!isAuthenticated) {
             </p>
             <button
               className="mt-2 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700"
-              onClick={() => navigate("/checkout")}
+              onClick={() => navigate("/order")}
             >
               Checkout
             </button>
@@ -92,6 +95,9 @@ if (!isAuthenticated) {
         </>
       )}
     </div>
+
+
+    </>
   );
 }
 

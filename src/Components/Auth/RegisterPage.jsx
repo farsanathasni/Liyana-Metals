@@ -33,7 +33,7 @@ function RegisterPage() {
       if (result.success) {
         alert("Registration successful! Please login.");
         resetForm();
-        navigate("/loginpage"); // Redirect to login page
+        navigate("/loginpage"); 
       } else {
         setError(result.error);
       }
@@ -56,7 +56,7 @@ function RegisterPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Name */}
+         
           <div>
             <label className="block text-gray-700 font-medium mb-1">Name</label>
             <input
@@ -75,7 +75,7 @@ function RegisterPage() {
             )}
           </div>
 
-          {/* Email */}
+         
           <div>
             <label className="block text-gray-700 font-medium mb-1">Email</label>
             <input
@@ -94,7 +94,7 @@ function RegisterPage() {
             )}
           </div>
 
-          {/* Password */}
+          
           <div>
             <label className="block text-gray-700 font-medium mb-1">Password</label>
             <input
@@ -113,7 +113,6 @@ function RegisterPage() {
             )}
           </div>
 
-          {/* Confirm Password */}
           <div>
             <label className="block text-gray-700 font-medium mb-1">Confirm Password</label>
             <input
@@ -132,7 +131,6 @@ function RegisterPage() {
             )}
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={isSubmitting}

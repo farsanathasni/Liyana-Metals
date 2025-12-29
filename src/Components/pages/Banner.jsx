@@ -9,7 +9,6 @@ function Banner() {
 
     <div className="bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl p-20 shadow-xl p-10 flex flex-col md:flex-row items-center justify-between">
 
-      {/* Left Content */}
       <div className="text-white text-center md:text-left">
         <p className="text-sm uppercase tracking-widest mb-2">
           🎄 Limited Time Offer
@@ -35,7 +34,6 @@ function Banner() {
         </button>
       </div>
 
-      {/* Right Offer Box */}
       <div className="mt-10 md:mt-0">
         <div className="bg-white/20 backdrop-blur-md rounded-2xl p-8 text-center text-white">
           <p className="text-lg font-medium">Christmas Special</p>

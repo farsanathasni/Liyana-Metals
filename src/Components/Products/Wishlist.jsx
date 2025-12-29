@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Navbar from "../Layout/Navbar";
 
 function Wishlist() {
   const [wishlist, setWishlist] = useState([]);
@@ -16,6 +17,9 @@ function Wishlist() {
   };
 
   return (
+    <>
+<Navbar/>
+
     <div className="max-w-5xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Your Wishlist</h1>
       {wishlist.length === 0 ? (
@@ -44,6 +48,10 @@ function Wishlist() {
         </ul>
       )}
     </div>
+
+
+
+    </>
   );
 }
 

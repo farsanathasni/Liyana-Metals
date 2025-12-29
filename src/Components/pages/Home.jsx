@@ -1,10 +1,9 @@
 import React from 'react'
-// import About from '../../Pages/About'
 import Navbar from '../Layout/Navbar'
 import Footer from '../Layout/Footer'
 import Hero from '../Hero/Hero'
-import Banner from '../Layout/Banner'
 import BestSeller from './BestSeller'
+import Banner from './Banner'
 
 function Home() {
   

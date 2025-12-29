@@ -23,10 +23,10 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Main Footer Content */}
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
           
-          {/* Brand Column */}
+
           <div className="space-y-6">
             <div className="flex items-center space-x-3">
               <div className="w-12 h-12 bg-amber-600 rounded-lg flex items-center justify-center">
@@ -42,7 +42,7 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Quick Links Column */}
+
           <div>
             <h3 className="text-xl font-semibold text-white mb-6 pb-3 border-b border-gray-700">
               Quick Links
@@ -61,7 +61,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Categories Column */}
+
           <div>
             <h3 className="text-xl font-semibold text-white mb-6 pb-3 border-b border-gray-700">
               Shop Categories
@@ -80,7 +80,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact Column */}
           <div>
             <h3 className="text-xl font-semibold text-white mb-6 pb-3 border-b border-gray-700">
               Contact Us
@@ -103,8 +102,8 @@ const Footer = () => {
   </div>
   <div>
     <p className="font-medium text-white">Phone</p>
-    <a href="tel:+918891749846" className="text-gray-400 hover:text-amber-400 transition-colors duration-300 text-lg">
-      +91 8891749846
+    <a href="tel:+919633849846" className="text-gray-400 hover:text-amber-400 transition-colors duration-300 text-lg">
+      +91 9633849846
     </a>
   </div>
 </li>
@@ -122,7 +121,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Newsletter Section */}
+
         <div className="mt-12 pt-10 border-t border-gray-800">
           <div className="max-w-2xl mx-auto text-center">
             <h3 className="text-xl font-semibold text-white mb-4">
@@ -144,7 +143,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Copyright Section */}
+
         <div className="mt-12 pt-8 border-t border-gray-800">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-gray-500 text-lg">

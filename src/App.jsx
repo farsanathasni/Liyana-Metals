@@ -1,18 +1,18 @@
 import React from 'react';
-import {  Routes, Route ,Navigate } from "react-router-dom";
-
+import {  Routes, Route  } from "react-router-dom";
+import Home from './Components/pages/Home';
+import Contact from './Components/pages/Contact';
+import About from './Components/pages/About';
 import RegisterPage from './Components/Auth/RegisterPage';
 import LoginPage from './Components/Auth/LoginPage';
-import Home from './Components/Products/Home';
-import About from './Pages/About';
 import Cart from './Components/Products/Cart';
-import Contact from './Components/Layout/Contact';
-import BestSeller from './Components/Products/BestSeller';
+import BestSeller from './Components/pages/BestSeller';
 import Products from './Components/Products/Products';
 import ProductDetails from './Components/Products/ProductsDetail';
 import Wishlist from './Components/Products/Wishlist';
-import Checkout from './Components/Products/Checkout';
-import SearchResults from './Components/Layout/SearchResults';
+import Banner from './Components/pages/Banner';
+import Order from './Components/Products/Order';
+import MyOrders from './Components/Products/MyOrders';
 
 
 function App() {
@@ -25,13 +25,14 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/loginpage" element={<LoginPage />} />
+          <Route path="/loginpage" element={<Banner />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/bestseller" element={<BestSeller/>} />
           <Route path="/products" element={<Products/>}/>
-          <Route path="/products/:id" element={<ProductDetails />} />
-          <Route path="wishlist" element={<Wishlist/>}/>
-          <Route path="checkout" element={<Checkout/>}/>
-          <Route path="/search" element={<SearchResults />} />
+          <Route path="/products/:id" element={<ProductDetails/>}/>
+          <Route path="/wishlist" element={<Wishlist/>}/>
+          <Route path="/order" element={<Order/>}/>
+          <Route path="/orders" element={<MyOrders/>}/>
         </Routes>
         
   );

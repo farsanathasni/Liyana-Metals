@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import api from '../Api/Axios'; // Import your axios instance
+import api from '../Api/Axios'; 
 
 const AuthContext = createContext();
 
@@ -12,10 +12,10 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
 
-  // Check if user is logged in on initial load
+  const [user, setUser] = useState(null);
 const [loadingAuth, setLoadingAuth] = useState(true);
+
 
 useEffect(() => {
   const storedUser = localStorage.getItem('user');
@@ -29,12 +29,12 @@ useEffect(() => {
   setLoadingAuth(false);
 }, []);
 
-  // Register function
-  const register = async (userData) => {
+    // registration
+
+const register = async (userData) => {
     try {
-      // First check if user exists in JSON Server
       const response = await api.get(`/users?email=${userData.email}`);
-      
+
       if (response.data.length > 0) {
         return { 
           success: false, 
@@ -42,18 +42,16 @@ useEffect(() => {
         };
       }
 
-      // Create new user with ID
       const newUser = {
         ...userData,
         id: Date.now().toString()
       };
 
-      // Save to JSON Server
       await api.post('/users', newUser);
-      
       return { success: true };
-    } catch (error) {
-      // If JSON Server is not running, use localStorage as fallback
+    } 
+
+    catch (error) {
       if (error.code === 'ERR_NETWORK') {
         return registerWithLocalStorage(userData);
       }
@@ -64,7 +62,7 @@ useEffect(() => {
     }
   };
 
-  // Fallback registration with localStorage
+
   const registerWithLocalStorage = (userData) => {
     try {
       const existingUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
@@ -83,9 +81,10 @@ useEffect(() => {
 
       existingUsers.push(newUser);
       localStorage.setItem('registeredUsers', JSON.stringify(existingUsers));
-      
       return { success: true };
-    } catch (error) {
+    } 
+    
+    catch (error) {
       return { 
         success: false, 
         error: 'Registration failed' 
@@ -93,10 +92,12 @@ useEffect(() => {
     }
   };
 
-  // Login function
+
+
+      //  logination
+
   const login = async (email, password) => {
     try {
-      // Try JSON Server first
       const response = await api.get(`/users?email=${email}&password=${password}`);
       
       if (response.data.length > 0) {
@@ -105,11 +106,10 @@ useEffect(() => {
         setUser(user);
         return { success: true, user };
       }
-
-      // Fallback to localStorage
       return loginWithLocalStorage(email, password);
-    } catch (error) {
-      // If JSON Server is not running, use localStorage
+    } 
+    
+    catch (error) {
       if (error.code === 'ERR_NETWORK') {
         return loginWithLocalStorage(email, password);
       }
@@ -120,7 +120,6 @@ useEffect(() => {
     }
   };
 
-  // Fallback login with localStorage
   const loginWithLocalStorage = (email, password) => {
     try {
       const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
@@ -136,7 +135,8 @@ useEffect(() => {
       localStorage.setItem('user', JSON.stringify(foundUser));
       setUser(foundUser);
       return { success: true, user: foundUser };
-    } catch (error) {
+    } 
+    catch (error) {
       return { 
         success: false, 
         error: 'Login failed' 
@@ -144,18 +144,20 @@ useEffect(() => {
     }
   };
 
-  // Logout function
-  const logout = () => {
-    localStorage.removeItem('user');
-    setUser(null);
-  };
 
-  // Check if JSON Server is running
+const logout = () => {
+  localStorage.removeItem('user'); 
+  setUser(null); 
+};
+
+
+
   const checkServerStatus = async () => {
-    try {
+    try { 
       await api.get('/users');
       return true;
-    } catch (error) {
+    } 
+    catch (error) {
       return false;
     }
   };
@@ -164,8 +166,8 @@ useEffect(() => {
     user,
     register,
     login,
-    logout,
     checkServerStatus,
+    logout,
     isAuthenticated: !!user,
     loadingAuth
   };

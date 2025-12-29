@@ -60,7 +60,6 @@ function Hero() {
     <section className="bg-gray-50 py-10">
       <div className="max-w-7xl mx-auto px-4">
 
-        {/* Heading */}
         <div className="mb-8 text-center">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
             Exclusive Offers on Home Essentials
@@ -70,10 +69,8 @@ function Hero() {
           </p>
         </div>
 
-        {/* Auto-scrolling container */}
         <div className="overflow-hidden relative">
           <div className="flex animate-scroll gap-6">
-            {/* Duplicate the list for seamless infinite scroll */}
             {[...ImageList, ...ImageList].map((item, index) => (
               <div
                 key={index}
