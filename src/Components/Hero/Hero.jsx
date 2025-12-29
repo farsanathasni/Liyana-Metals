@@ -3,7 +3,7 @@ import coolerImg from "../../Assets/cooler.webp";
 import chimminyImg from "../../Assets/chimminy.jpeg";
 import dinnersetImg from "../../Assets/dinnerset.jpeg";
 import indectionstoveImg from "../../Assets/indectionstove.jpeg";
-import ovenImg from "home-needs\src\Assets\oven.jpeg"
+import ovenImg from "../../Assets/oven.jpeg";
 import nonsticcasaroleImg from "../../Assets/nonsticcasarole.jpeg";
 import { useNavigate } from 'react-router-dom';
 
