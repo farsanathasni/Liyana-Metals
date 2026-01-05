@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import { useCart } from "../../Contexts/CartContext";
 import { useAuth } from "../../Contexts/AuthContext";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
 import { useWishlist } from "../../Contexts/WishList";
+import api from "../../Api/Axios";
+
 
 function ProductDetails() {
   const { id } = useParams();
@@ -19,15 +20,11 @@ const { isAuthenticated, loadingAuth } = useAuth();
 const { addToWishlist } = useWishlist();
 
 
-if (isInCart) {
-  navigate("/cart");
-  return;
-}
 
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3001/products/${id}`)
+    
+      api.get(`/products/${id}`)
       .then((res) => {
         setProduct(res.data);
         setLoading(false);
@@ -47,8 +44,9 @@ if (isInCart) {
     navigate("/loginpage");
     return;
   }
+   
+  const isInCart = cart.some(item => item.productId === product.id);
 
-  // 👇 If already in cart → go to cart
   if (isInCart) {
     navigate("/cart");
     return;
