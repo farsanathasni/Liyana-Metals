@@ -17,7 +17,7 @@ function ProductDetails() {
   const [loading, setLoading] = useState(true);   
   const {cart, addToCart } = useCart();
 const { isAuthenticated, loadingAuth } = useAuth();
-const { addToWishlist } = useWishlist();
+const { wishlist,addToWishlist } = useWishlist();
 
 
 
@@ -36,6 +36,10 @@ const { addToWishlist } = useWishlist();
   }, [id]);
 
 
+ const isInCart = product
+  ? cart.some(item => item.productId === product.id)
+  : false;
+
  const handleAddToCart = async () => {
   if (loadingAuth) return;
 
@@ -44,9 +48,8 @@ const { addToWishlist } = useWishlist();
     navigate("/loginpage");
     return;
   }
-   
-  const isInCart = cart.some(item => item.productId === product.id);
 
+  // 👇 If already in cart → go to cart
   if (isInCart) {
     navigate("/cart");
     return;
@@ -63,11 +66,33 @@ const { addToWishlist } = useWishlist();
 
 
 
-const handleAddToWishlist = () => {
-  addToWishlist(product);
-  alert("Added to wishlist ❤️");
-};
+const isInWishlist = product
+  ? wishlist.some(item => item.id === product.id)
+  : false;
 
+
+
+const handleAddToWishlist = async () => {
+  if (!isAuthenticated) {
+    alert("Please login to add wishlist");
+    navigate("/loginpage");
+    return;
+  }
+
+  // If already in wishlist → go to wishlist
+  if (isInWishlist) {
+    navigate("/wishlist");
+    return;
+  }
+
+  try {
+    await addToWishlist(product);
+    alert(`${product.name} added to wishlist ❤️`);
+  } catch (err) {
+    console.error(err);
+    alert("Failed to add to wishlist");
+  }
+};
 
 
   if (loading) {
@@ -118,23 +143,38 @@ const handleAddToWishlist = () => {
             Stock: {product.stock}
           </p>
 
-          <button
-  onClick={handleAddToCart}
-  className={`px-6 py-3 text-white rounded-lg transition flex items-center gap-2
-    ${isInCart ? "bg-green-600 hover:bg-green-700" : "bg-amber-600 hover:bg-amber-700"}
+        <div className="mt-6 flex items-center gap-4">
+  {/* Add / View Cart */}
+  <button
+    onClick={handleAddToCart}
+    className={`px-6 py-3 text-white rounded-lg transition flex items-center gap-2
+      ${
+        isInCart
+          ? "bg-green-600 hover:bg-green-700"
+          : "bg-amber-600 hover:bg-amber-700"
+      }
+    `}
+  >
+    <FaShoppingCart />
+    {isInCart ? "View Cart" : "Add to Cart"}
+  </button>
+
+<button
+  onClick={handleAddToWishlist}
+  className={`px-4 py-3 rounded-lg transition flex items-center gap-2 text-white
+    ${
+      isInWishlist
+        ? "bg-green-600 hover:bg-green-700"
+        : "bg-amber-600 hover:bg-amber-700"
+    }
   `}
 >
-  <FaShoppingCart />
-  {isInCart ? "View Cart" : "Add to Cart"}
+  <FaHeart />
+  {isInWishlist ? "View Wishlist" : "Add to Wishlist"}
 </button>
 
-            <button
-              onClick={handleAddToWishlist}
-              className="px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition"
-            >
-              <FaHeart />
-            </button>
-          </div>
+</div>
+       
 
           <div className="mt-8 border-t pt-6">
             <h3 className="font-semibold text-lg text-gray-800">
@@ -155,7 +195,7 @@ const handleAddToWishlist = () => {
             Back to Products
           </button>
         </div>
-      
+         </div>
     </section>
 
 <Footer/>
