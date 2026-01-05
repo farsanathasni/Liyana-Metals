@@ -1,7 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import api from '../Api/Axios'; 
-import { useCart } from './CartContext';
-import { useWishlist } from './WishList';
+
 
 const AuthContext = createContext();
 
@@ -16,9 +15,6 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(null);
-const [loadingAuth, setLoadingAuth] = useState(true);
-  const { clearWishlist } = useWishlist();
-const { clearCart } = useCart();
 
 useEffect(() => {
   const storedUser = localStorage.getItem('user');
@@ -166,10 +162,6 @@ const register = async (userData) => {
 const logout = () => {
   localStorage.removeItem('user'); 
   setUser(null); 
-  clearWishlist();
-    clearCart();
-  localStorage.removeItem("user");
-
 };
 
 
