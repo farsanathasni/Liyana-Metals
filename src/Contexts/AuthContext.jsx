@@ -15,6 +15,8 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(null);
+  const [loadingAuth, setLoadingAuth] = useState(true);
+
 
 useEffect(() => {
   const storedUser = localStorage.getItem('user');
