@@ -29,9 +29,13 @@ export const WishlistProvider = ({ children }) => {
     setWishlist(wishlist.filter(item => item.id !== id));
   };
 
+  const clearWishlist = () => {
+  setWishlist([]);
+};
+
   return (
     <WishlistContext.Provider
-      value={{ wishlist, addToWishlist, removeFromWishlist }}
+      value={{ wishlist, addToWishlist, removeFromWishlist,clearWishlist }}
     >
       {children}
     </WishlistContext.Provider>
