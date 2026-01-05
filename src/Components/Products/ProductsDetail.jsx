@@ -7,7 +7,6 @@ import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
 import { useWishlist } from "../../Contexts/WishList";
 import api from "../../Api/Axios";
-import fallbackImg from "../../Assets/fallback.png";
 
 
 
@@ -134,10 +133,9 @@ await addToWishlist({
     <section className="py-12 bg-gray-50">
       <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-10">
         <img
-          src={product.image || fallbackImg}
+          src={product.image }
           alt={product.name}
           className="w-full h-[400px] object-contain"
-          onError={(e) => (e.target.src = fallbackImg)}
         />
 
         <div>
