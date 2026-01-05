@@ -7,6 +7,8 @@ import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
 import { useWishlist } from "../../Contexts/WishList";
 import api from "../../Api/Axios";
+import fallbackImg from "../../Assets/fallback.png";
+
 
 
 function ProductDetails() {
@@ -22,25 +24,29 @@ const { wishlist,addToWishlist } = useWishlist();
 
 
 
-  useEffect(() => {
-    
-      api.get(`/products/${id}`)
-      .then((res) => {
-        setProduct(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching product:", err);
-        setLoading(false);
-      });
-  }, [id]);
+useEffect(() => {
+  if (!id) return;
+
+  api.get(`/products/${id.toString()}`)
+    .then((res) => {
+      setProduct(res.data);
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error("Error fetching product:", err);
+      setLoading(false);
+    });
+}, [id]);
 
 
 const isInCart = product
-  ? cart.some(item => item.productId === product.id)
+  ? cart.some(item => String(item.productId) === String(product.id))
   : false;
 
-
+const isInWishlist = product
+  ? wishlist.some(item => String(item.productId) === String(product.id))
+  : false;
+  
 
  const handleAddToCart = async () => {
   if (loadingAuth) return;
@@ -58,20 +64,18 @@ const isInCart = product
   }
 
   try {
-    await addToCart(product);
+await addToCart({
+  productId: String(product.id),
+  name: product.name,
+  price: product.price,
+  image: product.image,
+});
     alert(`${product.name} added to cart!`);
   } catch (err) {
     console.error(err);
     alert("Failed to add to cart");
   }
 };
-
-
-
-const isInWishlist = product
-  ? wishlist.some(item => item.id === product.id)
-  : false;
-
 
 
 const handleAddToWishlist = async () => {
@@ -88,7 +92,13 @@ const handleAddToWishlist = async () => {
   }
 
   try {
-    await addToWishlist(product);
+await addToWishlist({
+  productId: String(product.id),
+  name: product.name,
+  price: product.price,
+  image: product.image,
+});
+
     alert(`${product.name} added to wishlist ❤️`);
   } catch (err) {
     console.error(err);
@@ -124,10 +134,10 @@ const handleAddToWishlist = async () => {
     <section className="py-12 bg-gray-50">
       <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-10">
         <img
-          src={product.image || "/assets/fallback.png"}
+          src={product.image || fallbackImg}
           alt={product.name}
           className="w-full h-[400px] object-contain"
-          onError={(e) => (e.target.src = "/assets/fallback.png")}
+          onError={(e) => (e.target.src = fallbackImg)}
         />
 
         <div>
