@@ -15,20 +15,27 @@ function LoginPage() {
       password: "" 
     },
     onSubmit: async (values) => {
-      setIsSubmitting(true);
-      setError('');
-      
-      const result = await login(values.email, values.password);
-      
-      if (result.success) {
-        alert("Login successful");
-        navigate("/");
-      } else {
-        setError(result.error);
-      }
-      
-      setIsSubmitting(false);
-    }
+  setIsSubmitting(true);
+  setError("");
+
+  const result = await login(values.email, values.password);
+  if (!result.success) {
+    setError(result.error);
+    setIsSubmitting(false);
+    return;
+  }
+  alert("Login successful");
+
+  // adminlogin
+  const role = result.user.role || "user";
+  if (role === "admin") {
+    navigate("/dashboard");
+  } else {
+    navigate("/");
+  }
+
+  setIsSubmitting(false);
+}
   });
 
   return (

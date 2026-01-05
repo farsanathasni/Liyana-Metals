@@ -4,19 +4,41 @@
       "id": "1766388730774",
       "name": "Irfad",
       "email": "ahmedirfad8@gmail.com",
-      "password": "Irfad123%"
+      "password": "Irfad123%",
+      "status": "active"
     },
     {
       "id": "1766814441668",
       "name": "Farsana",
       "email": "thasnifarsana294@gmail.com",
-      "password": "12345fs"
+      "password": "12345fs",
+      "status": "active"
     },
     {
-      "id": "1766832960710",
-      "name": "farsana",
-      "email": "farsana@gmail.com",
-      "password": "12345fs"
+      "id": "1",
+      "name": "farsanaaa",
+      "email": "farsanathasni@gmail.com",
+      "password": "12ab345",
+      "role": "admin",
+      "status": "active"
+    },
+    {
+      "id": "1767438215894",
+      "name": "mufeeda",
+      "email": "mufeeda@gmail.com",
+      "password": "123mufi",
+      "role": "user",
+      "status": "active",
+      "createdAt": "2026-01-03T11:03:35.866Z"
+    },
+    {
+      "id": "1767583722894",
+      "name": "sahrudheen",
+      "email": "sahrudheen@gmail.com",
+      "password": "sahru123",
+      "role": "user",
+      "status": "active",
+      "createdAt": "2026-01-05T03:28:42.823Z"
     }
   ],
   "products": [
@@ -257,118 +279,59 @@
   ],
   "cart": [
     {
-      "id": "6c60",
-      "userId": "1766388730774",
-      "productId": 1,
-      "price": 299,
-      "image": "/src/Assets/airtightjar.jpeg",
-      "quantity": 2
-    },
-    {
-      "id": "96cb",
-      "userId": "1766388730774",
-      "productId": 2,
-      "price": 399,
-      "image": "/src/Assets/farypan.jpeg",
-      "quantity": 2
-    },
-    {
-      "id": "0e66",
-      "userId": "1766388730774",
-      "productId": 3,
-      "price": 275,
-      "image": "/src/Assets/knife1.jpeg",
+      "id": "4555",
+      "userId": "1767583722894",
+      "productId": "8",
+      "name": "Microwave Oven",
+      "price": "₹6,999",
+      "image": "https://i.pinimg.com/736x/d6/99/30/d69930a0cbf27b4f9842cebdb990cc15.jpg",
+      "category": "Appliances",
       "quantity": 1
     },
     {
-      "id": "ea7e",
-      "userId": "1766388730774",
-      "productId": 4,
-      "price": 1599,
-      "image": "/src/Assets/nonsticcasarole.jpeg",
+      "id": "4c35",
+      "userId": "1767583722894",
+      "name": "Premium Kitchen Knife",
+      "price": 275,
+      "image": "/src/Assets/knife1.jpeg",
+      "quantity": 3
+    },
+    {
+      "id": "8600",
+      "userId": "1767583722894",
+      "productId": "7",
+      "name": "Stainless Steel Dinner Set",
+      "price": "₹4,999",
+      "image": "https://i.pinimg.com/736x/91/bf/79/91bf79da9787a2b220eece0545b5a388.jpg",
+      "category": "Cookware",
+      "quantity": 1
+    },
+    {
+      "id": "ceb0",
+      "userId": "1767583722894",
+      "productId": 1,
+      "price": 299,
+      "image": "/src/Assets/airtightjar.jpeg",
       "quantity": 1
     }
   ],
   "orders": [
     {
-      "id": "c8cc",
-      "userId": "1766832960710",
+      "id": "d445",
+      "userId": 1766388730774,
       "items": [
         {
-          "id": "3168",
-          "productId": "1",
-          "name": "Non-Stick Fry Pan",
-          "price": "₹399",
-          "image": "https://i.pinimg.com/736x/82/97/de/8297de4208b89baa56916bc21affd85d.jpg",
-          "category": "Cookware",
-          "quantity": 1
-        },
-        {
-          "id": "4795",
-          "productId": 2,
-          "price": 399,
-          "image": "/src/assets/farypan.jpeg",
-          "quantity": 1
-        }
-      ],
-      "total": 798,
-      "customer": {
-        "name": "Farsana",
-        "address": "kunnumpuram",
-        "phone": "4545454545",
-        "payment": "COD"
-      },
-      "payment": "COD",
-      "status": "Placed",
-      "createdAt": "2025-12-29T04:02:51.886Z"
-    },
-    {
-      "id": "dd17",
-      "userId": "1766832960710",
-      "items": [
-        {
-          "id": "3168",
-          "productId": "1",
-          "name": "Non-Stick Fry Pan",
-          "price": "₹399",
-          "image": "https://i.pinimg.com/736x/82/97/de/8297de4208b89baa56916bc21affd85d.jpg",
-          "category": "Cookware",
-          "quantity": 1
-        },
-        {
-          "id": "4795",
-          "productId": 2,
-          "price": 399,
-          "image": "/src/assets/farypan.jpeg",
-          "quantity": 1
-        }
-      ],
-      "total": 798,
-      "customer": {
-        "name": "Farsana",
-        "address": "kunnumpuram",
-        "phone": "4545454545",
-        "payment": "COD"
-      },
-      "payment": "COD",
-      "status": "Placed",
-      "createdAt": "2025-12-29T04:02:53.540Z"
-    },
-    {
-      "id": "880b",
-      "userId": "1766832960710",
-      "items": [
-        {
-          "id": "d35f",
-          "productId": "1",
-          "name": "Non-Stick Fry Pan",
-          "price": "₹399",
-          "image": "https://i.pinimg.com/736x/82/97/de/8297de4208b89baa56916bc21affd85d.jpg",
+          "id": "3200",
+          "userId": "1766388730774",
+          "productId": "2",
+          "name": "Pressure Cooker",
+          "price": "₹1,299",
+          "image": "https://i.pinimg.com/736x/26/c5/6c/26c56c94fe6e42e6a63a707c49833b19.jpg",
           "category": "Cookware",
           "quantity": 1
         }
       ],
-      "total": 399,
+      "total": 1299,
       "customer": {
         "name": "Farsana",
         "address": "kunnumpuram",
@@ -376,257 +339,58 @@
         "payment": "COD"
       },
       "payment": "COD",
-      "status": "shipping",
-      "createdAt": "2025-12-29T06:36:08.346Z"
+      "status": "delivered",
+      "createdAt": "2026-01-03T06:00:56.270Z"
     },
     {
-      "id": "b5f5",
-      "userId": "1766832960710",
+      "id": "863b",
+      "userId": 1767438215894,
       "items": [
         {
-          "id": "d35f",
-          "productId": "1",
-          "name": "Non-Stick Fry Pan",
-          "price": "₹399",
-          "image": "https://i.pinimg.com/736x/82/97/de/8297de4208b89baa56916bc21affd85d.jpg",
-          "category": "Cookware",
-          "quantity": 1
+          "id": "212c",
+          "userId": "1767438215894",
+          "productId": 3,
+          "price": 275,
+          "image": "/src/Assets/knife1.jpeg",
+          "quantity": 1,
+          "name": "Unknown Product"
         }
       ],
-      "total": 399,
+      "total": 275,
       "customer": {
-        "name": "Farsana",
-        "address": "kunnumpuram",
-        "phone": "04545454545",
-        "payment": "COD"
-      },
-      "payment": "COD",
-      "status": "shipping",
-      "createdAt": "2025-12-29T06:42:28.293Z"
-    },
-    {
-      "id": "eb49",
-      "userId": "1766832960710",
-      "items": [
-        {
-          "id": "d35f",
-          "productId": "1",
-          "name": "Non-Stick Fry Pan",
-          "price": "₹399",
-          "image": "https://i.pinimg.com/736x/82/97/de/8297de4208b89baa56916bc21affd85d.jpg",
-          "category": "Cookware",
-          "quantity": 1
-        }
-      ],
-      "total": 399,
-      "customer": {
-        "name": "Farsana",
-        "address": "kunnumpuram",
-        "phone": "04545454545",
-        "payment": "COD"
-      },
-      "payment": "COD",
-      "status": "shipping",
-      "createdAt": "2025-12-29T06:42:31.016Z"
-    },
-    {
-      "id": "e994",
-      "userId": "1766832960710",
-      "items": [
-        {
-          "id": "d35f",
-          "productId": "1",
-          "name": "Non-Stick Fry Pan",
-          "price": "₹399",
-          "image": "https://i.pinimg.com/736x/82/97/de/8297de4208b89baa56916bc21affd85d.jpg",
-          "category": "Cookware",
-          "quantity": 1
-        }
-      ],
-      "total": 399,
-      "customer": {
-        "name": "Farsana",
-        "address": "kunnumpuram",
-        "phone": "04545454545",
-        "payment": "COD"
-      },
-      "payment": "COD",
-      "status": "shipping",
-      "createdAt": "2025-12-29T06:43:50.230Z"
-    },
-    {
-      "id": "b340",
-      "userId": "1766832960710",
-      "items": [
-        {
-          "id": "d35f",
-          "productId": "1",
-          "name": "Non-Stick Fry Pan",
-          "price": "₹399",
-          "image": "https://i.pinimg.com/736x/82/97/de/8297de4208b89baa56916bc21affd85d.jpg",
-          "category": "Cookware",
-          "quantity": 1
-        }
-      ],
-      "total": 399,
-      "customer": {
-        "name": "Farsana",
+        "name": "mufeeda",
         "address": "kunnumpuram",
         "phone": "04545454545",
         "payment": "COD"
       },
       "payment": "COD",
       "status": "placed",
-      "createdAt": "2025-12-29T06:53:59.495Z"
+      "createdAt": "2026-01-03T11:04:32.949Z"
     },
     {
-      "id": "a072",
-      "userId": "1766832960710",
+      "id": "78bf",
+      "userId": 1767438215894,
       "items": [
         {
-          "id": "d35f",
-          "productId": "1",
-          "name": "Non-Stick Fry Pan",
-          "price": "₹399",
-          "image": "https://i.pinimg.com/736x/82/97/de/8297de4208b89baa56916bc21affd85d.jpg",
-          "category": "Cookware",
-          "quantity": 1
+          "id": "5e04",
+          "userId": "1767438215894",
+          "productId": 3,
+          "price": 275,
+          "image": "/src/Assets/knife1.jpeg",
+          "quantity": 1,
+          "name": "Unknown Product"
         }
       ],
-      "total": 399,
+      "total": 275,
       "customer": {
-        "name": "Farsana",
+        "name": "mufeeda",
         "address": "kunnumpuram",
         "phone": "04545454545",
         "payment": "COD"
       },
       "payment": "COD",
       "status": "placed",
-      "createdAt": "2025-12-29T06:54:20.694Z"
-    },
-    {
-      "id": "356d",
-      "userId": "1766832960710",
-      "items": [
-        {
-          "id": "04d4",
-          "productId": "1",
-          "name": "Non-Stick Fry Pan",
-          "price": "₹399",
-          "image": "https://i.pinimg.com/736x/82/97/de/8297de4208b89baa56916bc21affd85d.jpg",
-          "category": "Cookware",
-          "quantity": 1
-        }
-      ],
-      "total": 399,
-      "customer": {
-        "name": "Farsana",
-        "address": "kunnumpuram",
-        "phone": "04545454545",
-        "payment": "COD"
-      },
-      "payment": "COD",
-      "status": "placed",
-      "createdAt": "2025-12-29T06:54:55.938Z"
-    },
-    {
-      "id": "2ca3",
-      "userId": "1766832960710",
-      "items": [
-        {
-          "id": "a0a6",
-          "productId": "3",
-          "name": "Induction stove",
-          "price": "₹2,499",
-          "image": "https://i.pinimg.com/1200x/c0/88/44/c08844226ef865017c64bc6566577303.jpg",
-          "category": "Cooktop & Chimney",
-          "quantity": 1
-        }
-      ],
-      "total": 2499,
-      "customer": {
-        "name": "Farsana",
-        "address": "kunnumpuram",
-        "phone": "04545454545",
-        "payment": "COD"
-      },
-      "payment": "COD",
-      "status": "placed",
-      "createdAt": "2025-12-29T07:05:10.752Z"
-    },
-    {
-      "id": "23b7",
-      "userId": "1766832960710",
-      "items": [
-        {
-          "id": "a0a6",
-          "productId": "3",
-          "name": "Induction stove",
-          "price": "₹2,499",
-          "image": "https://i.pinimg.com/1200x/c0/88/44/c08844226ef865017c64bc6566577303.jpg",
-          "category": "Cooktop & Chimney",
-          "quantity": 1
-        }
-      ],
-      "total": 2499,
-      "customer": {
-        "name": "Farsana",
-        "address": "kunnumpuram",
-        "phone": "04545454545",
-        "payment": "COD"
-      },
-      "payment": "COD",
-      "status": "placed",
-      "createdAt": "2025-12-29T07:05:20.894Z"
-    },
-    {
-      "id": "3ea0",
-      "userId": "1766832960710",
-      "items": [
-        {
-          "id": "a0a6",
-          "productId": "3",
-          "name": "Induction stove",
-          "price": "₹2,499",
-          "image": "https://i.pinimg.com/1200x/c0/88/44/c08844226ef865017c64bc6566577303.jpg",
-          "category": "Cooktop & Chimney",
-          "quantity": 1
-        }
-      ],
-      "total": 2499,
-      "customer": {
-        "name": "Farsana",
-        "address": "kunnumpuram",
-        "phone": "04545454545",
-        "payment": "COD"
-      },
-      "payment": "COD",
-      "status": "placed",
-      "createdAt": "2025-12-29T07:09:04.800Z"
-    },
-    {
-      "id": "99d1",
-      "userId": "1766814441668",
-      "items": [
-        {
-          "id": "b7b1",
-          "userId": "1766814441668",
-          "productId": 4,
-          "price": 1599,
-          "image": "/src/Assets/nonsticcasarole.jpeg",
-          "quantity": 1
-        }
-      ],
-      "total": 1599,
-      "customer": {
-        "name": "Farsana",
-        "address": "kunnumpuram",
-        "phone": "04545454545",
-        "payment": "COD"
-      },
-      "payment": "COD",
-      "status": "placed",
-      "createdAt": "2025-12-29T10:31:00.935Z"
+      "createdAt": "2026-01-03T11:05:54.964Z"
     }
   ]
 }

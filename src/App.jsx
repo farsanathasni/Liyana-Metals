@@ -13,6 +13,10 @@ import Wishlist from './Components/Products/Wishlist';
 import Banner from './Components/pages/Banner';
 import Order from './Components/Products/Order';
 import MyOrders from './Components/Products/MyOrders';
+import AdminDashborad from './Admin/AdminDashborad';
+import UserManagement from './Admin/UserManagement';
+import OrderManagement from './Admin/OrderManagement';
+import ProductsManagment from './Admin/ProductsManagment';
 
 
 function App() {
@@ -33,6 +37,10 @@ function App() {
           <Route path="/wishlist" element={<Wishlist/>}/>
           <Route path="/order" element={<Order/>}/>
           <Route path="/orders" element={<MyOrders/>}/>
+          <Route path="/dashboard" element={<AdminDashborad/>}/>
+          <Route path="/usermanagement" element={<UserManagement/>}/>
+          <Route path="/ordermanagement" element={<OrderManagement/>}/>
+          <Route path="/productsmanagement" element={<ProductsManagment/>}/>
         </Routes>
         
   );

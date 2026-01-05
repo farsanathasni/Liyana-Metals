@@ -7,7 +7,8 @@ import Navbar from "../Layout/Navbar";
 
 function Cart() {
   const navigate = useNavigate();
-  const { cart, removeFromCart, totalPrice } = useCart();
+  const { cart, removeFromCart,increaseQty,
+  decreaseQty, totalPrice } = useCart();
 const { isAuthenticated } = useAuth();
 
  
@@ -70,7 +71,27 @@ if (!isAuthenticated) {
                       Quantity: {item.quantity}
                     </p>
                   </div>
-                </div>
+                </div>   
+
+<div className="flex items-center gap-3">
+  <button
+    onClick={() => decreaseQty(item.productId)}
+    className="px-3 py-1 bg-gray-300 rounded"
+  >
+    −
+  </button>
+
+  <span className="font-semibold">{item.quantity}</span>
+
+  <button
+    onClick={() => increaseQty(item.productId)}
+    className="px-3 py-1 bg-gray-300 rounded"
+  >
+    +
+  </button>
+</div>
+
+
                 <button
                   onClick={() => removeFromCart(item.productId)}
                   className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"

@@ -52,7 +52,7 @@ const navigate = useNavigate();
 
     const handleLogout = () => {
   logout();
-  navigate("/"); 
+  navigate("/", { replace: true }); 
 };
 
   return (

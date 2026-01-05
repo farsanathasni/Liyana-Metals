@@ -41,19 +41,31 @@ const Productsdata = [
 
 function BestSeller() {
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const {cart, addToCart } = useCart();
   const { isAuthenticated } = useAuth();
 
-  const handleAddToCart = (item) => {
-    if (!isAuthenticated) {
-      alert("Please login to add items to cart");
-      navigate("/loginpage");
-      return;
-    }
 
-    addToCart({ ...item, quantity: 1 });
-    alert(`${item.title} added to cart!`);
-  };
+  const isInCart = (id) =>
+  cart.some(item => item.productId === id);
+
+
+  const handleAddToCart = (item) => {
+  if (!isAuthenticated) {
+    alert("Please login to add items to cart");
+    navigate("/loginpage");
+    return;
+  }
+
+  // 👇 If already in cart → go to cart
+  if (isInCart(item.id)) {
+    navigate("/cart");
+    return;
+  }
+
+  addToCart(item);
+  alert(`${item.title} added to cart!`);
+};
+
 
   return (
     <section className="py-12 bg-gray-50">
@@ -84,11 +96,16 @@ function BestSeller() {
                 <p className="text-sm text-gray-500">⭐ {item.rating}</p>
 
                 <button
-                  onClick={() => handleAddToCart(item)}
-                  className="mt-4 w-full bg-amber-600 text-white py-2 rounded-lg"
-                >
-                  Add to Cart
-                </button>
+  onClick={() => handleAddToCart(item)}
+  className={`mt-4 w-full py-2 rounded-lg text-white
+    ${isInCart(item.id)
+      ? "bg-green-600 hover:bg-green-700"
+      : "bg-amber-600 hover:bg-amber-700"}
+  `}
+>
+  {isInCart(item.id) ? "View Cart" : "Add to Cart"}
+</button>
+
               </div>
 
             </div>

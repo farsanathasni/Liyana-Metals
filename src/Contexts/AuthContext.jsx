@@ -102,6 +102,14 @@ const register = async (userData) => {
       
       if (response.data.length > 0) {
         const user = response.data[0];
+
+        if (user.status === "blocked") {
+    return {
+      success: false,
+      error: "Your account has been blocked by admin"
+    };
+  }
+
         localStorage.setItem('user', JSON.stringify(user));
         setUser(user);
         return { success: true, user };
@@ -131,6 +139,13 @@ const register = async (userData) => {
           error: 'Invalid email or password' 
         };
       }
+
+      if (foundUser.status === "blocked") {
+  return {
+    success: false,
+    error: "Your account has been blocked by admin"
+  };
+}
 
       localStorage.setItem('user', JSON.stringify(foundUser));
       setUser(foundUser);

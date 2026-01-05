@@ -27,7 +27,10 @@ function RegisterPage() {
       const result = await register({
         name: values.name,
         email: values.email,
-        password: values.password
+        password: values.password,
+        role: "user",
+        status: "active",
+        createdAt:  new Date().toISOString()
       });
       
       if (result.success) {

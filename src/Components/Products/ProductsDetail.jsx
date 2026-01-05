@@ -6,6 +6,7 @@ import { useAuth } from "../../Contexts/AuthContext";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import Navbar from "../Layout/Navbar";
 import Footer from "../Layout/Footer";
+import { useWishlist } from "../../Contexts/WishList";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -13,8 +14,15 @@ function ProductDetails() {
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);   
-  const { addToCart } = useCart();
+  const {cart, addToCart } = useCart();
 const { isAuthenticated, loadingAuth } = useAuth();
+const { addToWishlist } = useWishlist();
+
+
+if (isInCart) {
+  navigate("/cart");
+  return;
+}
 
 
   useEffect(() => {
@@ -31,12 +39,18 @@ const { isAuthenticated, loadingAuth } = useAuth();
   }, [id]);
 
 
-  const handleAddToCart = async () => {
-  if (loadingAuth) return; 
+ const handleAddToCart = async () => {
+  if (loadingAuth) return;
 
   if (!isAuthenticated) {
     alert("Please login or register to add items to cart");
     navigate("/loginpage");
+    return;
+  }
+
+  // 👇 If already in cart → go to cart
+  if (isInCart) {
+    navigate("/cart");
     return;
   }
 
@@ -50,19 +64,11 @@ const { isAuthenticated, loadingAuth } = useAuth();
 };
 
 
+
 const handleAddToWishlist = () => {
-    const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
-    const exists = wishlist.find((item) => item.id === product.id);
-
-    if (exists) {
-      alert("Already in wishlist");
-      return;
-    }
-
-    wishlist.push(product);
-    localStorage.setItem("wishlist", JSON.stringify(wishlist));
-    alert("Added to wishlist ❤️");
-  };
+  addToWishlist(product);
+  alert("Added to wishlist ❤️");
+};
 
 
 
@@ -84,6 +90,7 @@ const handleAddToWishlist = () => {
   }
 
 
+ 
 
   return (
     <>
@@ -113,13 +120,15 @@ const handleAddToWishlist = () => {
             Stock: {product.stock}
           </p>
 
-          <div className="flex gap-4 mt-6">
-            <button
-              onClick={handleAddToCart}
-              className="px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition"
-            >
-              <FaShoppingCart />
-            </button>
+          <button
+  onClick={handleAddToCart}
+  className={`px-6 py-3 text-white rounded-lg transition flex items-center gap-2
+    ${isInCart ? "bg-green-600 hover:bg-green-700" : "bg-amber-600 hover:bg-amber-700"}
+  `}
+>
+  <FaShoppingCart />
+  {isInCart ? "View Cart" : "Add to Cart"}
+</button>
 
             <button
               onClick={handleAddToWishlist}
@@ -148,7 +157,7 @@ const handleAddToWishlist = () => {
             Back to Products
           </button>
         </div>
-      </div>
+      
     </section>
 
 <Footer/>

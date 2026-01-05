@@ -80,6 +80,63 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+
+// ➕ Increase quantity
+const increaseQty = async (productId) => {
+  const item = cart.find(
+    c => c.productId === productId && c.userId === user.id
+  );
+  if (!item) return;
+
+  try {
+    await axios.patch(
+      `http://localhost:3001/cart/${item.id}`,
+      { quantity: item.quantity + 1 }
+    );
+
+    setCart(cart.map(c =>
+      c.id === item.id
+        ? { ...c, quantity: c.quantity + 1 }
+        : c
+    ));
+  } catch (err) {
+    console.error("Failed to increase quantity", err);
+  }
+};
+
+
+// ➖ Decrease quantity
+const decreaseQty = async (productId) => {
+  const item = cart.find(
+    c => c.productId === productId && c.userId === user.id
+  );
+  if (!item) return;
+
+  if (item.quantity === 1) {
+    // If quantity is 1 → remove item
+    removeFromCart(productId);
+    return;
+  }
+
+  try {
+    await axios.patch(
+      `http://localhost:3001/cart/${item.id}`,
+      { quantity: item.quantity - 1 }
+    );
+
+    setCart(cart.map(c =>
+      c.id === item.id
+        ? { ...c, quantity: c.quantity - 1 }
+        : c
+    ));
+  } catch (err) {
+    console.error("Failed to decrease quantity", err);
+  }
+};
+
+
+
+
   // 🔹 Remove from cart
  const removeFromCart = async (productId) => {
   if (!user) return;
@@ -119,7 +176,8 @@ setCart([]);
 
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, totalPrice, clearCart }}
+      value={{ cart, addToCart, removeFromCart, increaseQty,
+    decreaseQty, totalPrice, clearCart }}
     >
       {children}
     </CartContext.Provider>
