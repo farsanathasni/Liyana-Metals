@@ -10,17 +10,17 @@ import { SearchProvider } from "./Contexts/SerchContext";
 import { WishlistProvider } from "./Contexts/WishList";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
-    <AuthProvider>
-      <CartProvider>
+ <BrowserRouter>
+  <AuthProvider>
+    <CartProvider>
+      <WishlistProvider>
         <OrderProvider>
           <SearchProvider>
-            <WishlistProvider>
-        <App />
-        </WishlistProvider>
-        </SearchProvider>
+            <App />
+          </SearchProvider>
         </OrderProvider>
-      </CartProvider>
-    </AuthProvider>
-  </BrowserRouter>
+      </WishlistProvider>
+    </CartProvider>
+  </AuthProvider>
+</BrowserRouter>
 );
