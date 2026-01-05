@@ -81,33 +81,40 @@ function BestSeller() {
           </h1>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {Productsdata.map((item) => (
-            <div key={item.id} className="bg-white rounded-xl shadow-md">
+<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+  {Productsdata.map((item) => (
+    <div key={item.id} className="bg-white rounded-xl shadow-md">
 
-              <div className="h-52 flex items-center justify-center">
-                <img src={item.image} alt={item.title} className="max-h-44" 
-                 onError={(e) => e.target.src = "/assets/fallback.png"}
-                />
-              </div>
+      <div className="h-52 flex items-center justify-center">
+        <img
+          src={item.image}
+          alt={item.title}
+          className="max-h-44"
+          onError={(e) => (e.target.src = fallbackImg)} // fallback if image fails
+        />
+      </div>
 
-              <div className="p-4 text-center">
-                <h3 className="font-semibold text-lg">{item.title}</h3>
-                <p className="text-amber-600 font-bold">₹{item.price}</p>
-                <p className="text-sm text-gray-500">⭐ {item.rating}</p>
+      <div className="p-4 text-center">
+        <h3 className="font-semibold text-lg">{item.title}</h3>
+        <p className="text-amber-600 font-bold">₹{item.price}</p>
+        <p className="text-sm text-gray-500">⭐ {item.rating}</p>
 
-                <button
-  onClick={() => handleAddToCart(item)}
-  className={`mt-4 w-full py-2 rounded-lg text-white
-    ${isInCart(item.id)
-      ? "bg-green-600 hover:bg-green-700"
-      : "bg-amber-600 hover:bg-amber-700"}
-  `}
->
-  {isInCart(item.id) ? "View Cart" : "Add to Cart"}
-</button>
+        <button
+          onClick={() => handleAddToCart(item)}
+          className={`mt-4 w-full py-2 rounded-lg text-white
+            ${isInCart(item.id)
+              ? "bg-green-600 hover:bg-green-700"
+              : "bg-amber-600 hover:bg-amber-700"}
+          `}
+        >
+          {isInCart(item.id) ? "View Cart" : "Add to Cart"}
+        </button>
+      </div>
 
-              </div>
+    </div>
+  ))}
+</div>
+
 
             </div>
           ))}
