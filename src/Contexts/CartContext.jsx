@@ -165,14 +165,14 @@ const decreaseQty = async (productId) => {
   }, 0);
 
   // 🔹 Clear cart (after order)
-  const clearCart = () => {
-  setCart([]);
-};
+useEffect(() => {
+  if (!user) setCart([]);
+}, [user]);
 
   return (
     <CartContext.Provider
       value={{ cart, addToCart, removeFromCart, increaseQty,
-    decreaseQty, totalPrice, clearCart }}
+    decreaseQty, totalPrice }}
     >
       {children}
     </CartContext.Provider>
