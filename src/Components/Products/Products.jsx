@@ -5,6 +5,7 @@ import Footer from "../Layout/Footer";
 import { Link } from "react-router-dom";
 import { useSearch } from "../../Contexts/SerchContext";
 import { FaSearch } from "react-icons/fa";
+import api from "../Api/Axios";
 
 function Products() {
   const [activeCategory, setActiveCategory] = useState("All Items");
@@ -19,8 +20,7 @@ function Products() {
 
   useEffect(() => {
     setLoading(true);
-    axios
-      .get("/products")
+    api.get("/products")
       .then((res) => {
         setProducts(res.data);
         setFilteredProducts(res.data);
