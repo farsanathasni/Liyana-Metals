@@ -20,7 +20,7 @@ function Products() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:3001/products")
+      .get("/products")
       .then((res) => {
         setProducts(res.data);
         setFilteredProducts(res.data);
