@@ -165,14 +165,9 @@ const decreaseQty = async (productId) => {
   }, 0);
 
   // 🔹 Clear cart (after order)
-  const clearCart = async () => {
-    await Promise.all(
-  cart.map(item =>
-    axios.delete(`http://localhost:3001/cart/${item.id}`)
-  )
-);
-setCart([]);
-  };
+  const clearCart = () => {
+  setCart([]);
+};
 
   return (
     <CartContext.Provider
