@@ -1,4 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useAuth } from "./AuthContext";
+
 
 const WishlistContext = createContext();
 
@@ -6,6 +8,8 @@ export const useWishlist = () => useContext(WishlistContext);
 
 export const WishlistProvider = ({ children }) => {
   const [wishlist, setWishlist] = useState([]);
+    const { user } = useAuth();
+
 
   // Load from localStorage on start
   useEffect(() => {
@@ -29,13 +33,13 @@ export const WishlistProvider = ({ children }) => {
     setWishlist(wishlist.filter(item => item.id !== id));
   };
 
-  const clearWishlist = () => {
-  setWishlist([]);
-};
+   useEffect(() => {
+  if (!user) setWishlist([]);
+}, [user]);
 
   return (
     <WishlistContext.Provider
-      value={{ wishlist, addToWishlist, removeFromWishlist,clearWishlist }}
+      value={{ wishlist, addToWishlist, removeFromWishlist }}
     >
       {children}
     </WishlistContext.Provider>
