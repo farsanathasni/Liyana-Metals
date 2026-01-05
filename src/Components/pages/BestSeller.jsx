@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../../Contexts/CartContext";
 import { useAuth } from "../../Contexts/AuthContext";
 
+import farypanImg from "../../Assets/farypan.jpeg"; // Import at top
 import airtightjarImg from "../../Assets/airtightjar.jpeg";
-import farypanImg from "../../Assets/farypan.jpeg";
 import knife1Img from "../../Assets/knife1.jpeg";
 import nonsticcasaroleImg from "../../Assets/nonsticcasarole.jpeg";
+
 
 const Productsdata = [
   {
