@@ -44,8 +44,8 @@ export const CartProvider = ({ children }) => {
 
     if (existing) {
       try {
-        await axios.patch(
-          `http://localhost:3001/cart/${existing.id}`,
+        await api.patch(
+          `/cart/${existing.id}`,
           { quantity: existing.quantity + 1 }
         );
 
@@ -71,8 +71,8 @@ export const CartProvider = ({ children }) => {
       };
 
       try {
-        const res = await axios.post(
-          "http://localhost:3001/cart",
+        const res = await api.post(
+          "/cart",
           newItem
         );
         setCart([...cart, res.data]);
@@ -91,8 +91,8 @@ const increaseQty = async (productId) => {
   if (!item) return;
 
   try {
-    await axios.patch(
-      `http://localhost:3001/cart/${item.id}`,
+    await api.patch(
+      `/cart/${item.id}`,
       { quantity: item.quantity + 1 }
     );
 
@@ -121,8 +121,8 @@ const decreaseQty = async (productId) => {
   }
 
   try {
-    await axios.patch(
-      `http://localhost:3001/cart/${item.id}`,
+    await api.patch(
+      `/cart/${item.id}`,
       { quantity: item.quantity - 1 }
     );
 
@@ -149,7 +149,7 @@ const decreaseQty = async (productId) => {
   if (!item) return;
 
   try {
-    await axios.delete(`http://localhost:3001/cart/${item.id}`);
+    await api.delete(`/cart/${item.id}`);
     setCart(cart.filter(c => c.id !== item.id));
   } catch (err) {
     console.error("Failed to remove cart item", err);
