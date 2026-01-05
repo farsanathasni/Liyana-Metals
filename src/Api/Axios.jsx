@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3001', // Make sure this matches your JSON Server port
+  baseURL: 'https://liyana-metals-backend-1.onrender.com/', 
   timeout: 10000,
 });
 
