@@ -37,8 +37,9 @@ const { wishlist,addToWishlist } = useWishlist();
 
 
 const isInCart = product
-  ? cart.some(item => item.id === product.id)
+  ? cart.some(item => item.productId === product.id)
   : false;
+
 
 
  const handleAddToCart = async () => {
