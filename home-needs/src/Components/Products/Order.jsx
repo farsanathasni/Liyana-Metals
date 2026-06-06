@@ -67,10 +67,17 @@ const handlePlaceOrder = async () => {
     if (form.payment === "COD") {
       const order = {
         userId: user._id,
-        items: cart.map(i => ({
-          productId: i.productId._id,
-          quantity: i.quantity,
-        })),
+       items: cart.map(i => ({
+   productId: i.productId._id,
+
+   name: i.productId.name,
+
+   image: i.productId.image,
+
+   price: i.productId.price,
+
+   quantity: i.quantity,
+})),
         total: totalPrice,
         customer: form,
         payment: "COD",
@@ -164,7 +171,7 @@ const getPriceNumber = (price) => {
 
         {cart.map((item) => (
           <div
-            key={item.id}
+            key={item._id || item.productId?._id}
             className="flex justify-between border-b py-3"
           >
             <div className="flex items-center gap-4">

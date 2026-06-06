@@ -72,11 +72,11 @@ function MyOrders() {
           </div>
 
  <div className="border-t pt-3">
-  {order.items.map((item) => (
-    <div
-      key={item._id}
-      className="flex justify-between items-center py-3"
-    >
+  {order.items.map((item, index) => (
+  <div
+    key={index}
+    className="flex justify-between items-center py-3"
+  >
       <div className="flex items-center gap-4">
         <img
           src={item.productId?.image || "/default-product.png"}
