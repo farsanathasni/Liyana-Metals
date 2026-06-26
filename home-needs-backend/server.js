@@ -24,10 +24,7 @@ const connectDB = require("./src/config/db.js");
 const app = express();
 
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://liyana-metals-iota.vercel.app"
-  ],
+  origin: "https://liyana-metals-iota.vercel.app",
   credentials: true
 }));
 
