@@ -41,7 +41,7 @@ connectDB();
 
 
 app.use("/api/users",userRoutes)
-app.use("/api/products",productsRoutes)
+app.use("/products",productsRoutes)
 app.use("/api/cart",cartRoutes)
 app.use("/api/wishlist",wishlistRoutes)
 app.use("/api/order",orderRoutes)
