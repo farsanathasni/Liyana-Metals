@@ -25,7 +25,7 @@ const app = express();
 // -------------------- CORS FIX (IMPORTANT) --------------------
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://liyana-metals-iota.vercel.app"
+  "https://liyana-metals-iota.vercel.app/api"
 ];
 
 app.use(cors({
