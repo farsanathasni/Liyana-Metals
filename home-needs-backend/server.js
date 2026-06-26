@@ -37,12 +37,15 @@ app.use(cors({
     }
   },
   credentials: true,
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-// Handle preflight requests
-app.options("*", cors());
+// // Handle preflight requests
+// app.options(/.*/, cors({
+//   origin: allowedOrigins,
+//   credentials: true
+// }));
 
 // -------------------- MIDDLEWARE --------------------
 app.use(express.json());
