@@ -108,7 +108,6 @@ useEffect(() => {
         </div>
       </section>
       
- console.log(import.meta.env.VITE_BASE_URI);
 
       <section className="py-10">
         <div className="max-w-7xl mx-auto px-4">
