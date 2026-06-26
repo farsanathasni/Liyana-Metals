@@ -24,7 +24,7 @@ const fetchProducts = async () => {
     setLoading(true);
 
     const res = await api.get(
-      `http://localhost:5000/api/products?page=${page}&search=${searchTerm}&category=${activeCategory}`
+      `/products?page=${page}&search=${searchTerm}&category=${activeCategory}`
     );
 
     // setProducts(res.data.product);
@@ -49,7 +49,7 @@ useEffect(() => {
   const fetchCategories = async () => {
     try {
       const res = await api.get(
-        "http://localhost:5000/api/products/categories"
+        "/products/categories"
       );
 
       setCategories(["All Items", ...res.data]);
