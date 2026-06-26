@@ -24,8 +24,13 @@ const connectDB = require("./src/config/db.js");
 const app = express();
 
 app.use(cors({
-  origin: "https://liyana-metals-iota.vercel.app",
-  credentials: true
+  origin: [
+    "http://localhost:5173",
+    "https://liyana-metals-iota.vercel.app"
+  ],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 app.use(express.json());
@@ -41,7 +46,7 @@ connectDB();
 
 
 app.use("/api/users",userRoutes)
-app.use("/products",productsRoutes)
+app.use("/api/products",productsRoutes)
 app.use("/api/cart",cartRoutes)
 app.use("/api/wishlist",wishlistRoutes)
 app.use("/api/order",orderRoutes)
