@@ -35,11 +35,11 @@ api.interceptors.response.use(
       try {
         console.log("Refreshing token...");
 
-        const res = await axios.post(
-          "http://localhost:5000/api/auth/refresh",
-          {},
-          { withCredentials: true }
-        );
+      const res = await axios.post(
+  `${import.meta.env.VITE_BASE_URI}/auth/refresh`,
+  {},
+  { withCredentials: true }
+);
 
         const newToken = res.data.token;
 
