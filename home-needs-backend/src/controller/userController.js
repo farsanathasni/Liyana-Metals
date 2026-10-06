@@ -24,8 +24,8 @@ const registration = async (req, res) => {
 const refreshToken = generateRefreshToken(user._id);
 res.cookie("refreshToken", refreshToken, {
   httpOnly: true,
-  secure: false,
-  sameSite: "lax",
+  secure: true,
+  sameSite: "none",
   maxAge: 30 * 24 * 60 * 60 * 1000,
 });
   res.status(201).json({
@@ -63,8 +63,8 @@ const refreshToken = generateRefreshToken(user._id);
 
 res.cookie("refreshToken", refreshToken, {
   httpOnly: true,
-  secure: false,
-  sameSite: "lax",
+  secure: true,
+  sameSite: "none",
   maxAge: 30 * 24 * 60 * 60 * 1000,
 });
 
