@@ -22,30 +22,40 @@ const connectDB = require("./src/config/db.js");
 
 const app = express();
 
-// -------------------- CORS FIX (IMPORTANT) --------------------
+// -------------------- CORS --------------------
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://liyana-metals-iota.vercel.app"
+  "http://localhost:5174",
+  "http://127.0.0.1:5173",
+  "http://127.0.0.1:5174",
+  "https://liyana-metals-iota.vercel.app",
 ];
 
-app.use(cors({
+// Dynamically add FRONTEND_URL from env if provided (useful for Render+Vercel deployments)
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
+const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Allow requests with no origin (mobile apps, curl, Postman, server-to-server)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      // Return a rejection (403), NOT an Error (which causes HTTP 500)
+      callback(null, false);
     }
   },
   credentials: true,
-  methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
-// // Handle preflight requests
-// app.options(/.*/, cors({
-//   origin: allowedOrigins,
-//   credentials: true
-// }));
+app.use(cors(corsOptions));
+
+// Handle OPTIONS preflight requests explicitly for all routes
+// app.options("*", cors(corsOptions));
 
 // -------------------- MIDDLEWARE --------------------
 app.use(express.json());
@@ -83,8 +93,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log("server is running on " + PORT);
 });
-
-
-
-
-
