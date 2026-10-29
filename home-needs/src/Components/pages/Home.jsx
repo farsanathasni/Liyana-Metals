@@ -134,7 +134,7 @@ function Home() {
                 Why Choose Us
               </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 mt-2">
-                The Home Needs Standard
+                The Liyana Metals Standard
               </h2>
               <p className="text-stone-600 text-sm sm:text-base mt-2">
                 We blend traditional Indian kitchen requirements with state-of-the-art engineering.

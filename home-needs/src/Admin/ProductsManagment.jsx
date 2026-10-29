@@ -109,7 +109,7 @@ function ProductsManagment() {
               <FaUserShield className="text-xl" />
             </div>
             <div>
-              <h2 className="text-lg font-black tracking-tight text-white">HOME NEEDS</h2>
+              <h2 className="text-lg font-black tracking-tight text-white">LIYANA METALS</h2>
               <p className="text-[10px] uppercase font-bold tracking-widest text-emerald-300">
                 Admin Console
               </p>

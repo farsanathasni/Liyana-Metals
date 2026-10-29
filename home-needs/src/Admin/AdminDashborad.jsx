@@ -87,7 +87,7 @@ function AdminDashboard() {
           >
             ☰
           </button>
-          <span className="font-extrabold text-base tracking-tight">Home Needs Admin</span>
+          <span className="font-extrabold text-base tracking-tight">Liyana Metals Admin</span>
         </div>
         <Link to="/" className="text-xs text-emerald-200 hover:text-white flex items-center gap-1 font-semibold">
           <FaStore /> Store
@@ -122,7 +122,7 @@ function AdminDashboard() {
               <FaUserShield className="text-xl" />
             </div>
             <div>
-              <h2 className="text-lg font-black tracking-tight text-white">HOME NEEDS</h2>
+              <h2 className="text-lg font-black tracking-tight text-white">LIYANA METALS</h2>
               <p className="text-[10px] uppercase font-bold tracking-widest text-emerald-300">
                 Admin Console
               </p>
