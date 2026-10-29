@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../Contexts/AuthContext';
 import { useFormik } from 'formik';
+import { FaHome, FaEnvelope, FaLock, FaArrowRight, FaShieldAlt } from 'react-icons/fa';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -15,89 +16,140 @@ function LoginPage() {
       password: "" 
     },
     onSubmit: async (values) => {
-  setIsSubmitting(true);
-  setError("");
+      setIsSubmitting(true);
+      setError("");
 
-  const result = await login(values.email, values.password);
-  if (!result.success) {
-    setError(result.error);
-    setIsSubmitting(false);
-    return;
-  }
-  alert("Login successful");
+      const result = await login(values.email, values.password);
+      if (!result.success) {
+        setError(result.error);
+        setIsSubmitting(false);
+        return;
+      }
 
-  // adminlogin
-  const role = result.user.role || "user";
-  if (role === "admin") {
-    navigate("/dashboard");
-  } else {
-    navigate("/");
-  }
+      // Check role
+      const role = result.user?.role || "user";
+      if (role === "admin") {
+        navigate("/dashboard");
+      } else {
+        navigate("/");
+      }
 
-  setIsSubmitting(false);
-}
+      setIsSubmitting(false);
+    }
   });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-amber-50">
-      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-amber-700 mb-6 text-center">
-          Login to Liyana Metals
-        </h2>
+    <div className="min-h-screen flex items-center justify-center bg-[#FAF8F5] py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      
+      {/* Decorative Blur Background Circles */}
+      <div className="absolute -top-20 -left-20 w-80 h-80 rounded-full bg-[#1E3A2F]/10 blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-20 -right-20 w-80 h-80 rounded-full bg-[#C05621]/10 blur-3xl pointer-events-none" />
 
-        {error && (
-          <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-center">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={formik.handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">Email</label>
-            <input
-              type='email'
-              name='email'
-              placeholder='Enter your email'
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
-              required
-            />
-          </div>
-
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full py-2 bg-amber-600 text-white font-semibold rounded-lg hover:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isSubmitting ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
-
-
-        <p className="mt-4 text-center text-gray-600">
-          Don't have an account?{" "}
-          <Link 
-            to="/register" 
-            className="text-amber-600 font-semibold hover:text-amber-700"
-          >
-            Register
+      <div className="w-full max-w-md relative z-10">
+        
+        {/* Brand Header */}
+        <div className="text-center mb-8">
+          <Link to="/" className="inline-flex items-center gap-3 group">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#1E3A2F] to-[#2E5848] flex items-center justify-center text-white shadow-md shadow-[#1E3A2F]/20 group-hover:scale-105 transition-transform">
+              <FaHome className="text-2xl text-emerald-200" />
+            </div>
+            <div className="text-left">
+              <span className="text-2xl font-extrabold tracking-tight text-stone-900">
+                LIYANA  <span className="text-[#C05621]"> METALS</span>
+              </span>
+              <p className="text-[10px] tracking-widest uppercase font-semibold text-stone-600">
+                Kitchen & Living Essentials
+              </p>
+            </div>
           </Link>
-        </p>
+          
+          <h2 className="text-2xl font-extrabold text-stone-900 mt-6 tracking-tight">
+            Welcome Back
+          </h2>
+          <p className="text-stone-500 text-xs mt-1">
+            Sign in to access your orders, saved cart items, and wishlist.
+          </p>
+        </div>
+
+        {/* Card */}
+        <div className="bg-white rounded-3xl p-8 border border-stone-200/80 shadow-xl">
+          
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl text-xs font-semibold flex items-center gap-2">
+              <span>⚠️</span>
+              <span>{error}</span>
+            </div>
+          )}
+
+          <form onSubmit={formik.handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1.5">
+                Email Address
+              </label>
+              <div className="relative">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your registered email"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  className="w-full bg-[#FAF8F5] border border-stone-200 rounded-xl px-4 py-3 pl-10 text-sm text-stone-900 focus:outline-none focus:border-[#1E3A2F] focus:bg-white transition-colors"
+                  required
+                />
+                <FaEnvelope className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-xs" />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1.5">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Enter your account password"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  className="w-full bg-[#FAF8F5] border border-stone-200 rounded-xl px-4 py-3 pl-10 text-sm text-stone-900 focus:outline-none focus:border-[#1E3A2F] focus:bg-white transition-colors"
+                  required
+                />
+                <FaLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-xs" />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-4 bg-[#1E3A2F] hover:bg-[#284f3f] text-white font-bold rounded-2xl shadow-lg shadow-[#1E3A2F]/20 hover:shadow-xl transition-all duration-200 text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>{isSubmitting ? "Signing In..." : "Sign In to Account"}</span>
+              <FaArrowRight className="text-xs" />
+            </button>
+          </form>
+
+          <div className="mt-6 pt-6 border-t border-stone-100 text-center text-xs text-stone-500">
+            Don't have an account yet?{" "}
+            <Link 
+              to="/register" 
+              className="text-[#C05621] font-bold hover:underline ml-1"
+            >
+              Create Account
+            </Link>
+          </div>
+
+        </div>
+
+        {/* Back Link */}
+        <div className="text-center mt-6">
+          <Link
+            to="/"
+            className="text-xs text-stone-500 hover:text-stone-800 transition-colors"
+          >
+            &larr; Back to Home Store
+          </Link>
+        </div>
+
       </div>
     </div>
   );

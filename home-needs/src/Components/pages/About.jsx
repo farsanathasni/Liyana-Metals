@@ -1,126 +1,139 @@
-import React from 'react'
-import Navbar from '../Layout/Navbar'
+import React from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import Navbar from '../Layout/Navbar';
+import Footer from '../Layout/Footer';
+import {
+  FaHome,
+  FaAward,
+  FaCheckCircle,
+  FaShieldAlt,
+  FaHeart,
+  FaArrowRight,
+  FaUsers,
+  FaTruck,
+  FaLeaf,
+} from 'react-icons/fa';
 
 function About() {
+  const navigate = useNavigate();
+
   return (
-    <>
-<Navbar/>
+    <div className="min-h-screen bg-[#FAF8F5] flex flex-col">
+      <Navbar />
 
-<section className="relative overflow-hidden py-20 md:py-28 bg-gradient-to-b from-gray-50 to-white">
-  <div className="absolute top-10 left-10 w-40 h-40 bg-amber-100 rounded-full opacity-20 blur-xl"></div>
-  <div className="absolute bottom-10 right-10 w-60 h-60 bg-amber-50 rounded-full opacity-10 blur-xl"></div>
-  
-  <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
-    
-    <div className="text-center mb-16">
-      <div className="inline-flex items-center justify-center w-16 h-16 bg-amber-100 rounded-2xl mb-6">
-        <svg className="w-8 h-8 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-        </svg>
-      </div>
-      <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-        Crafting <span className="text-amber-700">Homes</span>,<br />
-        <span className="text-gray-700">Not Just Houses</span>
-      </h2>
-      <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-        Welcome to Liyana Metals – Where premium quality meets everyday living
-      </p>
-    </div>
+      <main className="flex-1">
+        
+        {/* Hero Section */}
+        <section className="relative overflow-hidden py-20 bg-gradient-to-b from-[#F2ECE3] to-[#FAF8F5]">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
+            
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-stone-200 text-xs font-bold text-[#1E3A2F] shadow-xs">
+              <FaHome className="text-[#C05621]" />
+              <span>Our Story & Philosophy</span>
+            </div>
 
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-      
-      <div className="space-y-8">
-        <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-            <span className="w-3 h-3 bg-amber-500 rounded-full mr-3"></span>
-            The Home Needs Difference
-          </h3>
-          <p className="text-gray-700 leading-relaxed">
-            We don't just sell products; we curate experiences. Each item in our collection is handpicked 
-            for its ability to transform ordinary moments into cherished memories. From our non-stick 
-            cookware that makes cooking effortless to our artisanal dinnerware that elevates every meal, 
-            we're dedicated to enhancing your daily rituals.
-          </p>
-        </div>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-stone-900 tracking-tight leading-tight">
+              Crafting <span className="text-[#1E3A2F]">Homes</span>, <br className="hidden sm:inline" />
+              Not Just <span className="text-[#C05621] italic font-serif">Houses.</span>
+            </h1>
 
-        <div className="grid grid-cols-2 gap-6">
-          <div className="bg-gradient-to-br from-amber-50 to-white p-6 rounded-xl border border-amber-100">
-            <div className="text-amber-700 text-3xl font-bold mb-2">5,000+</div>
-            <div className="text-gray-700 font-medium">Products Tested</div>
-            <div className="text-gray-500 text-sm mt-1">Only 200 make the cut</div>
+            <p className="text-base sm:text-lg text-stone-600 max-w-2xl mx-auto leading-relaxed">
+              Welcome to <strong>Liyana Metals</strong> — where timeless design, heavy-gauge durability, and everyday convenience meet in modern Indian kitchens.
+            </p>
+
+            <div className="pt-4 flex justify-center gap-4">
+              <button
+                onClick={() => navigate("/products")}
+                className="px-8 py-3.5 bg-[#1E3A2F] hover:bg-[#284f3f] text-white font-bold rounded-2xl shadow-lg transition-all flex items-center gap-2 text-sm"
+              >
+                <span>Explore Our Essentials</span>
+                <FaArrowRight className="text-xs" />
+              </button>
+            </div>
+
           </div>
-          <div className="bg-gradient-to-br from-amber-50 to-white p-6 rounded-xl border border-amber-100">
-            <div className="text-amber-700 text-3xl font-bold mb-2">45+</div>
-            <div className="text-gray-700 font-medium">Indian Cities</div>
-            <div className="text-gray-500 text-sm mt-1">Serving nationwide</div>
+        </section>
+
+        {/* Brand Core Pillars */}
+        <section className="py-20 bg-white border-y border-stone-200/70">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              
+              <div className="space-y-6">
+                <span className="text-xs uppercase tracking-wider font-bold text-[#C05621]">
+                  The Home Needs Difference
+                </span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">
+                  Curated for the Indian Culinary Heritage
+                </h2>
+                <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
+                  We don't merely manufacture appliances; we elevate everyday home rituals. Indian cooking involves complex spices, high heat, and hearty family portions. Our non-stick casseroles, triply tawas, and heavy-duty mixer grinders are engineered to withstand rigorous daily use while remaining effortless to clean.
+                </p>
+
+                <div className="grid grid-cols-2 gap-4 pt-2">
+                  <div className="bg-[#FAF8F5] p-5 rounded-2xl border border-stone-200/70">
+                    <p className="text-3xl font-black text-[#1E3A2F]">50,000+</p>
+                    <p className="text-xs font-bold text-stone-800 mt-1">Families Served</p>
+                    <p className="text-[11px] text-stone-500 mt-0.5">Across 45+ Indian cities</p>
+                  </div>
+                  <div className="bg-[#FAF8F5] p-5 rounded-2xl border border-stone-200/70">
+                    <p className="text-3xl font-black text-[#C05621]">25+</p>
+                    <p className="text-xs font-bold text-stone-800 mt-1">Quality Benchmarks</p>
+                    <p className="text-[11px] text-stone-500 mt-0.5">Tested before dispatch</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Pillars Cards */}
+              <div className="space-y-4">
+                <div className="p-6 rounded-3xl bg-[#FAF8F5] border border-stone-200/80 shadow-xs flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-[#1E3A2F]/10 text-[#1E3A2F] flex items-center justify-center text-xl flex-shrink-0">
+                    <FaShieldAlt />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-stone-900 text-base">Certified Food-Grade Standard</h3>
+                    <p className="text-xs text-stone-600 mt-1 leading-relaxed">
+                      Every pan, cooker, and container is 100% PFOA and heavy-metal free, guaranteeing your family's health and pure food taste.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-6 rounded-3xl bg-[#FAF8F5] border border-stone-200/80 shadow-xs flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-[#C05621]/10 text-[#C05621] flex items-center justify-center text-xl flex-shrink-0">
+                    <FaAward />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-stone-900 text-base">Energy-Smart Precision</h3>
+                    <p className="text-xs text-stone-600 mt-1 leading-relaxed">
+                      Our induction cooktops and motor appliances are tuned for optimal Indian voltage, reducing electricity wastage while delivering maximum power.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-6 rounded-3xl bg-[#FAF8F5] border border-stone-200/80 shadow-xs flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-600/10 text-emerald-700 flex items-center justify-center text-xl flex-shrink-0">
+                    <FaHeart />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-stone-900 text-base">Customer-First Service</h3>
+                    <p className="text-xs text-stone-600 mt-1 leading-relaxed">
+                      Direct manufacturer pricing, prompt warranty resolution, and real human support from our Tamil Nadu distribution headquarters.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
           </div>
-        </div>
-      </div>
+        </section>
 
-      <div className="space-y-8">
-        <div className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl shadow-lg border border-gray-100">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-            <span className="w-3 h-3 bg-amber-500 rounded-full mr-3"></span>
-            For the Modern Indian Home
-          </h3>
-          <p className="text-gray-700 leading-relaxed mb-6">
-            Understanding the unique needs of Indian households, we've designed products that excel in 
-            both traditional cooking and contemporary living. Our pressure cookers handle your weekend 
-            biryanis, while our sleek appliances fit perfectly in modern modular kitchens.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <span className="px-4 py-2 bg-amber-50 text-amber-700 rounded-full text-sm font-medium">Spice-Friendly Cookware</span>
-            <span className="px-4 py-2 bg-amber-50 text-amber-700 rounded-full text-sm font-medium">Easy-Clean Materials</span>
-            <span className="px-4 py-2 bg-amber-50 text-amber-700 rounded-full text-sm font-medium">Space-Smart Design</span>
-          </div>
-        </div>
+      </main>
 
-        <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-            <span className="w-3 h-3 bg-amber-500 rounded-full mr-3"></span>
-            Our Promise to You
-          </h3>
-          <ul className="space-y-4">
-            <li className="flex items-start">
-              <svg className="w-5 h-5 text-amber-600 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-              <span className="text-gray-700">Every product undergoes 25+ quality checks before reaching you</span>
-            </li>
-            <li className="flex items-start">
-              <svg className="w-5 h-5 text-amber-600 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-              <span className="text-gray-700">Direct partnerships with manufacturers for genuine affordability</span>
-            </li>
-            <li className="flex items-start">
-              <svg className="w-5 h-5 text-amber-600 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-              <span className="text-gray-700">Expert support for choosing the perfect products for your home</span>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <Footer />
     </div>
-
-    <div className="mt-16 text-center">
-      <div className="inline-flex flex-col sm:flex-row gap-4 items-center bg-gradient-to-r from-amber-50 to-white p-8 rounded-2xl border border-amber-100 shadow-sm">
-        <div className="text-left">
-          <h4 className="text-xl font-bold text-gray-900">Ready to Transform Your Home?</h4>
-          <p className="text-gray-600 mt-1">Join 50,000+ families who trust Home Needs</p>
-        </div>
-        <button className="px-8 py-3 bg-amber-600 text-white font-semibold rounded-lg hover:bg-amber-700 transition-colors duration-300 shadow-md hover:shadow-lg">
-          Explore Our Collection
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-</>
-  )
+  );
 }
 
-export default About
+export default About;
