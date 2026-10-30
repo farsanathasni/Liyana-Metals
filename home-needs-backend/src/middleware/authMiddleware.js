@@ -1,33 +1,38 @@
-const jwt=require("jsonwebtoken")
-const User=require("../model/user")
+const jwt = require("jsonwebtoken");
+const User = require("../model/user");
 
-const protect=async(req,res,next)=>{
-    let token;
+const protect = async (req, res, next) => {
+  let token;
 
-    if(
-        req.headers.authorization && req.headers.authorization.startsWith("Bearer")
-    ){
-        try{
-         token=req.headers.authorization.split(" ")[1];
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    try {
+      token = req.headers.authorization.split(" ")[1];
 
-         const decoded=jwt.verify(
-            token,
-            process.env.JWT_SECRET
-         );
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-         req.user=await User.findById(decoded.id).select("-password");
+      req.user = await User.findById(decoded.id).select("-password");
 
-        return next()
-         
+      return next();
+    } catch (err) {
+      return res.status(401).send("not Authorized , token not valid");
     }
-    catch(err){
-      return   res.status(401).send("not Authorized , token not valid")
-    }
-    }
+  }
 
-   if(!token){
-      return   res.status(401).send("no token")
-   } 
-}
+  if (!token) {
+    return res.status(401).send("no token");
+  }
+};
 
-module.exports=protect
+const adminOnly = (req, res, next) => {
+  if (req.user && req.user.role === "admin") {
+    return next();
+  }
+  return res.status(403).json({ message: "Access denied. Admin privileges required." });
+};
+
+module.exports = protect;
+module.exports.protect = protect;
+module.exports.adminOnly = adminOnly;

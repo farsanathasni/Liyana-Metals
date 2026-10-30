@@ -1,21 +1,21 @@
-const Order=require("../model/order")
+const Order = require("../model/order");
 
-const getAllOrder=async(req,res)=>{
-    try{
-        const order=await Order.find().populate("userId","name email") .populate("items.productId", "name image price");
+const getAllOrder = async (req, res) => {
+  try {
+    const order = await Order.find()
+      .populate("userId", "name email")
+      .populate("items.productId", "name image price")
+      .sort({ createdAt: -1 });
 
-        res.json(order)
-    }
-    catch (error) {
+    res.json(order);
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
-}
-
-
+};
 
 const updateOrderStatus = async (req, res) => {
   try {
-    const { status } = req.body;
+    const { status, paymentStatus } = req.body;
 
     const order = await Order.findById(req.params.id);
 
@@ -23,7 +23,9 @@ const updateOrderStatus = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    order.status = status;
+    if (status) order.status = status;
+    if (paymentStatus) order.paymentStatus = paymentStatus;
+
     await order.save();
 
     res.json(order);
@@ -32,9 +34,9 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
-const deleteOrder=async (req,res)=>{
-    try{
-        const order=await Order.findByIdAndDelete(req.params.id)
+const deleteOrder = async (req, res) => {
+  try {
+    const order = await Order.findByIdAndDelete(req.params.id);
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
@@ -45,4 +47,4 @@ const deleteOrder=async (req,res)=>{
   }
 };
 
-module.exports={getAllOrder,updateOrderStatus,deleteOrder}
+module.exports = { getAllOrder, updateOrderStatus, deleteOrder };
