@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import api from '../Api/Axios';
-import { NavLink, useNavigate, Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import api from "../Api/Axios";
+import { NavLink, useNavigate, Link } from "react-router-dom";
 import {
   FaBoxOpen,
   FaHome,
@@ -12,11 +12,13 @@ import {
   FaEye,
   FaTrash,
   FaCheckCircle,
-  FaShippingFast,
   FaClock,
   FaTimesCircle,
-} from 'react-icons/fa';
-import { useAuth } from '../Contexts/AuthContext';
+  FaUndo,
+  FaMoneyBillWave,
+  FaCreditCard,
+} from "react-icons/fa";
+import { useAuth } from "../Contexts/AuthContext";
 
 function OrderManagement() {
   const [order, setOrder] = useState([]);
@@ -38,20 +40,18 @@ function OrderManagement() {
     fetchOrder();
   }, []);
 
-  const updateOrderStatus = async (orderId, newStatus) => {
+  const updateOrderFields = async (orderId, updates) => {
     try {
-      await api.patch(`/admin/order/${orderId}`, {
-        status: newStatus,
-      });
+      const res = await api.patch(`/admin/order/${orderId}`, updates);
 
       setSelectedOrder((prev) => ({
         ...prev,
-        status: newStatus,
+        ...updates,
       }));
 
       fetchOrder();
     } catch (error) {
-      console.error("Failed to update order status", error);
+      console.error("Failed to update order fields", error);
     }
   };
 
@@ -64,6 +64,9 @@ function OrderManagement() {
     try {
       await api.delete(`/admin/order/${orderId}`);
       setOrder((prev) => prev.filter((o) => o._id !== orderId));
+      if (selectedOrder?._id === orderId) {
+        setSelectedOrder(null);
+      }
     } catch (error) {
       console.error("Failed to delete order", error);
     }
@@ -90,6 +93,36 @@ function OrderManagement() {
         return <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700">Cancelled</span>;
       default:
         return <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800">Placed</span>;
+    }
+  };
+
+  const getPaymentBadge = (paymentStatus) => {
+    const p = (paymentStatus || "pending").toLowerCase();
+    switch (p) {
+      case "paid":
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+            <FaCheckCircle className="text-[10px]" /> Paid
+          </span>
+        );
+      case "failed":
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800">
+            <FaTimesCircle className="text-[10px]" /> Failed
+          </span>
+        );
+      case "refunded":
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-800">
+            <FaUndo className="text-[10px]" /> Refunded
+          </span>
+        );
+      default:
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">
+            <FaClock className="text-[10px]" /> Pending
+          </span>
+        );
     }
   };
 
@@ -194,7 +227,7 @@ function OrderManagement() {
               Order Fulfillment & Shipments
             </h1>
             <p className="text-stone-500 text-xs sm:text-sm mt-1">
-              Process customer purchases, track parcel status, and update deliveries.
+              Process customer purchases, inspect payment verification statuses, and update parcel deliveries.
             </p>
           </div>
 
@@ -205,9 +238,10 @@ function OrderManagement() {
                   <tr>
                     <th className="px-6 py-4">Order ID</th>
                     <th className="px-6 py-4">Customer</th>
-                    <th className="px-6 py-4">Items Summary</th>
                     <th className="px-6 py-4">Total Amount</th>
-                    <th className="px-6 py-4">Status</th>
+                    <th className="px-6 py-4">Payment Method</th>
+                    <th className="px-6 py-4">Payment Status</th>
+                    <th className="px-6 py-4">Fulfillment</th>
                     <th className="px-6 py-4 text-right">Actions</th>
                   </tr>
                 </thead>
@@ -220,11 +254,21 @@ function OrderManagement() {
                       <td className="px-6 py-4 font-semibold text-stone-900">
                         {o.customer?.name || o.userId?.name || "Customer"}
                       </td>
-                      <td className="px-6 py-4 text-stone-600 max-w-xs truncate">
-                        {o.items?.map((item) => item.productId?.name || item.name).filter(Boolean).join(", ") || "Products"}
-                      </td>
                       <td className="px-6 py-4 font-extrabold text-[#1E3A2F]">
                         ₹{Number(o.total || 0).toLocaleString("en-IN")}
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-700">
+                          {o.payment === "COD" ? (
+                            <FaMoneyBillWave className="text-[#1E3A2F]" />
+                          ) : (
+                            <FaCreditCard className="text-[#C05621]" />
+                          )}
+                          {o.payment === "COD" ? "Cash on Delivery" : "Razorpay"}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        {getPaymentBadge(o.paymentStatus)}
                       </td>
                       <td className="px-6 py-4">
                         {getStatusBadge(o.status)}
@@ -271,7 +315,21 @@ function OrderManagement() {
                 </div>
                 <div>
                   <span className="text-[10px] uppercase font-bold text-stone-400 block">Payment Mode</span>
-                  <span className="font-bold text-[#1E3A2F]">{selectedOrder.payment || "COD"}</span>
+                  <span className="font-bold text-[#1E3A2F]">
+                    {selectedOrder.payment === "COD" ? "Cash on Delivery" : "Razorpay"}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-stone-400 block">Payment Status</span>
+                  <div className="mt-1">
+                    {getPaymentBadge(selectedOrder.paymentStatus)}
+                  </div>
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-stone-400 block">Fulfillment</span>
+                  <div className="mt-1">
+                    {getStatusBadge(selectedOrder.status)}
+                  </div>
                 </div>
               </div>
 
@@ -286,6 +344,11 @@ function OrderManagement() {
                 <p className="text-stone-500 mt-1">
                   📍 {selectedOrder.customer?.address}
                 </p>
+                {selectedOrder.transactionId && (
+                  <p className="text-[11px] font-mono text-stone-400 mt-1">
+                    Transaction ID: {selectedOrder.transactionId}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -321,20 +384,39 @@ function OrderManagement() {
                 </span>
               </div>
 
-              <div className="pt-2">
-                <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1.5">
-                  Update Delivery Status
-                </label>
-                <select
-                  value={selectedOrder.status || "placed"}
-                  onChange={(e) => updateOrderStatus(selectedOrder._id, e.target.value)}
-                  className="w-full bg-[#FAF8F5] border border-stone-200 rounded-xl px-4 py-2.5 text-xs text-stone-900 focus:outline-none focus:border-[#1E3A2F]"
-                >
-                  <option value="placed">Placed</option>
-                  <option value="shipped">Shipped</option>
-                  <option value="delivered">Delivered</option>
-                  <option value="cancelled">Cancelled</option>
-                </select>
+              {/* Status Updaters */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <div>
+                  <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1.5">
+                    Update Delivery Status
+                  </label>
+                  <select
+                    value={selectedOrder.status || "placed"}
+                    onChange={(e) => updateOrderFields(selectedOrder._id, { status: e.target.value })}
+                    className="w-full bg-[#FAF8F5] border border-stone-200 rounded-xl px-4 py-2.5 text-xs text-stone-900 focus:outline-none focus:border-[#1E3A2F]"
+                  >
+                    <option value="placed">Placed</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1.5">
+                    Update Payment Status
+                  </label>
+                  <select
+                    value={selectedOrder.paymentStatus || "pending"}
+                    onChange={(e) => updateOrderFields(selectedOrder._id, { paymentStatus: e.target.value })}
+                    className="w-full bg-[#FAF8F5] border border-stone-200 rounded-xl px-4 py-2.5 text-xs text-stone-900 focus:outline-none focus:border-[#1E3A2F]"
+                  >
+                    <option value="pending">Pending</option>
+                    <option value="paid">Paid</option>
+                    <option value="failed">Failed</option>
+                    <option value="refunded">Refunded</option>
+                  </select>
+                </div>
               </div>
             </div>
 

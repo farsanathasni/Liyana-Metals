@@ -1,153 +1,223 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
   FaShoppingCart,
   FaHeart,
   FaShippingFast,
   FaSearch,
-  FaUser,
   FaBars,
   FaTimes,
   FaSignOutAlt,
   FaChevronDown,
-  FaHome,
   FaBoxes,
   FaShieldAlt,
+  FaHome,
+  FaStore,
+  FaPhone,
 } from "react-icons/fa";
 import { useAuth } from "../../Contexts/AuthContext";
 import { useCart } from "../../Contexts/CartContext";
 import { useWishlist } from "../../Contexts/WishList";
 import { useSearch } from "../../Contexts/SerchContext";
 
+/* ─────────────────────────────────────────────
+   Liyana Metals — Navbar
+   Breakpoints tested: 320 / 375 / 425 / 768 / 1024 / 1280+
+───────────────────────────────────────────── */
+
+const CATEGORIES = [
+  { name: "All Products",      path: "/products" },
+  { name: "Cookware",          path: "/products" },
+  { name: "Cooktop & Chimney", path: "/products" },
+  { name: "Kitchen Tools",     path: "/products" },
+  { name: "Appliances",        path: "/products" },
+  { name: "Homeware",          path: "/products" },
+];
+
 function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [searchOpenMobile, setSearchOpenMobile] = useState(false);
-  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
-  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
+  const [mobileOpen,    setMobileOpen]    = useState(false);
+  const [searchMobile,  setSearchMobile]  = useState(false);
+  const [userDrop,      setUserDrop]      = useState(false);
+  const [catDrop,       setCatDrop]       = useState(false);
+  const [catMobile,     setCatMobile]     = useState(false); // accordion in mobile menu
+  const [scrolled,      setScrolled]      = useState(false);
 
   const { user, isAuthenticated, logout } = useAuth();
-  const { cart } = useCart();
-  const { wishlist } = useWishlist();
-  const { searchTerm, setSearchTerm } = useSearch();
+  const { cart }                          = useCart();
+  const { wishlist }                      = useWishlist();
+  const { searchTerm, setSearchTerm }     = useSearch();
 
-  const navigate = useNavigate();
-  const location = useLocation();
-  const dropdownRef = useRef(null);
+  const navigate     = useNavigate();
+  const location     = useLocation();
+  const dropRef      = useRef(null);
 
-  const totalItems = cart?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0;
+  const totalItems    = cart?.reduce((s, i) => s + (i.quantity || 0), 0) || 0;
   const wishlistCount = wishlist?.length || 0;
 
-  // Click outside listener for dropdowns
+  /* ── close mobile menu on route change ── */
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setUserDropdownOpen(false);
-        setCategoryDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    setMobileOpen(false);
+    setSearchMobile(false);
+    setCatMobile(false);
+  }, [location.pathname]);
+
+  /* ── scroll shadow ── */
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleSearchSubmit = (e) => {
+  /* ── close dropdowns on outside click ── */
+  useEffect(() => {
+    const handler = (e) => {
+      if (dropRef.current && !dropRef.current.contains(e.target)) {
+        setUserDrop(false);
+        setCatDrop(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  /* ── lock body scroll when mobile menu is open ── */
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
+  /* ── keyboard: Escape closes everything ── */
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Escape") {
+        setMobileOpen(false);
+        setUserDrop(false);
+        setCatDrop(false);
+        setSearchMobile(false);
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+
+  const handleSearchSubmit = useCallback((e) => {
     e.preventDefault();
-    if (location.pathname !== "/products") {
-      navigate("/products");
-    }
-    setSearchOpenMobile(false);
-  };
+    if (location.pathname !== "/products") navigate("/products");
+    setSearchMobile(false);
+    setMobileOpen(false);
+  }, [location.pathname, navigate]);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     logout();
-    setUserDropdownOpen(false);
+    setUserDrop(false);
+    setMobileOpen(false);
     navigate("/");
-  };
+  }, [logout, navigate]);
 
-  const navLinkClass = ({ isActive }) =>
+  const closeMobile = useCallback(() => {
+    setMobileOpen(false);
+    setCatMobile(false);
+  }, []);
+
+  /* ── active link style ── */
+  const navLink = ({ isActive }) =>
     `text-sm font-medium tracking-wide transition-all duration-200 ${
       isActive
-        ? "text-[#C05621] font-semibold border-b-2 border-[#C05621] pb-1"
-        : "text-stone-700 hover:text-[#C05621] pb-1 border-b-2 border-transparent"
+        ? "text-[#C05621] font-semibold border-b-2 border-[#C05621] pb-0.5"
+        : "text-stone-700 hover:text-[#C05621] pb-0.5 border-b-2 border-transparent"
     }`;
 
-  const categoriesList = [
-    { name: "All Products", path: "/products" },
-    { name: "Cookware", path: "/products" },
-    { name: "Cooktop & Chimney", path: "/products" },
-    { name: "Kitchen Tools", path: "/products" },
-    { name: "Appliances", path: "/products" },
-    { name: "Homeware", path: "/products" },
-  ];
+  /* ── mobile link style ── */
+  const mobileLink = ({ isActive }) =>
+    `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+      isActive
+        ? "bg-[#1E3A2F]/8 text-[#1E3A2F] font-semibold"
+        : "text-stone-700 hover:bg-stone-50 hover:text-stone-900"
+    }`;
 
   return (
     <>
-      {/* Top Announcement Bar */}
-      <div className="bg-[#1E3A2F] text-white text-xs py-2 px-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <p className="flex items-center gap-2 mx-auto sm:mx-0 font-medium tracking-wide">
-            <span className="hidden sm:inline bg-emerald-700/60 px-2 py-0.5 rounded text-[11px] font-semibold tracking-wider uppercase">
-              Special Offer
+      {/* ══════════════ TOP ANNOUNCEMENT STRIP ══════════════ */}
+      <div className="bg-[#1E3A2F] text-white text-[11px] py-2 px-4 overflow-hidden">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
+          {/* Scrolling ticker on mobile, static on sm+ */}
+          <p className="font-medium tracking-wide truncate flex items-center gap-2 min-w-0">
+            <span className="hidden sm:inline shrink-0 bg-emerald-700/60 px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase">
+              Offer
             </span>
-            <span>Free Express Delivery on Orders Over ₹999 across India</span>
+            <span className="truncate">Free Express Delivery on Orders Over ₹999</span>
           </p>
-          <div className="hidden sm:flex items-center gap-6 text-emerald-100 text-[11px]">
-            <span>100% Food-Grade Certified</span>
-            <span>24/7 Support: +91 9633849846</span>
+          <div className="hidden sm:flex items-center gap-4 shrink-0 text-emerald-100">
+            <span className="flex items-center gap-1">
+              <FaPhone className="text-[9px]" />+91 9633849846
+            </span>
+            <span className="opacity-60">|</span>
+            <span>Food-Grade Certified</span>
           </div>
         </div>
       </div>
 
-      {/* Main Sticky Navbar */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-stone-200/80 shadow-xs transition-all">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20 gap-4">
-            
-            {/* Brand Logo */}
-            <Link to="/" className="flex items-center gap-3 group flex-shrink-0">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#1E3A2F] to-[#2E5848] flex items-center justify-center text-white shadow-md shadow-[#1E3A2F]/20 group-hover:scale-105 transition-transform">
-                <FaHome className="text-xl text-emerald-200" />
+      {/* ══════════════ STICKY HEADER ══════════════ */}
+      <header
+        className={`sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-stone-200/80 transition-shadow duration-200 ${
+          scrolled ? "shadow-md" : "shadow-sm"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex items-center h-16 sm:h-18 lg:h-20 gap-2 sm:gap-4">
+
+            {/* ── LOGO ── */}
+            <Link
+              to="/"
+              className="flex items-center gap-2 sm:gap-3 group shrink-0 mr-1"
+              aria-label="Liyana Metals – Home"
+            >
+              <div className="w-9 h-9 sm:w-10 sm:h-10 lg:w-11 lg:h-11 rounded-xl bg-gradient-to-br from-[#1E3A2F] to-[#2E5848] flex items-center justify-center text-white shadow-md shadow-[#1E3A2F]/20 group-hover:scale-105 transition-transform shrink-0">
+                <FaHome className="text-base sm:text-lg lg:text-xl text-emerald-200" />
               </div>
-              <div className="flex flex-col">
-                <span className="text-2xl font-extrabold tracking-tight text-stone-900 group-hover:text-[#1E3A2F] transition-colors">
+              <div className="flex flex-col leading-none">
+                <span className="text-lg sm:text-xl lg:text-2xl font-extrabold tracking-tight text-stone-900 group-hover:text-[#1E3A2F] transition-colors whitespace-nowrap">
                   LIYANA <span className="text-[#C05621]">METALS</span>
                 </span>
-                <span className="text-[10px] tracking-widest uppercase font-semibold text-stone-600 -mt-1">
-                  Living & Kitchen Essentials
+                <span className="hidden sm:block text-[9px] tracking-widest uppercase font-semibold text-stone-500 mt-0.5">
+                  Living &amp; Kitchen Essentials
                 </span>
               </div>
             </Link>
 
-            {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-8">
-              <NavLink to="/" className={navLinkClass}>
-                Home
-              </NavLink>
-              <NavLink to="/products" className={navLinkClass}>
-                Shop
-              </NavLink>
+            {/* ── DESKTOP NAV LINKS ── */}
+            <nav className="hidden lg:flex items-center gap-7 shrink-0" aria-label="Main navigation">
+              <NavLink to="/"        className={navLink}>Home</NavLink>
+              <NavLink to="/products" className={navLink}>Shop</NavLink>
 
-              {/* Categories Dropdown */}
-              <div className="relative group">
+              {/* Categories hover dropdown */}
+              <div
+                className="relative"
+                ref={dropRef}
+                onMouseEnter={() => setCatDrop(true)}
+                onMouseLeave={() => setCatDrop(false)}
+              >
                 <button
-                  onClick={() => setCategoryDropdownOpen(!categoryDropdownOpen)}
-                  onMouseEnter={() => setCategoryDropdownOpen(true)}
+                  onClick={() => setCatDrop((v) => !v)}
                   className="flex items-center gap-1.5 text-sm font-medium tracking-wide text-stone-700 hover:text-[#C05621] transition-colors py-2"
+                  aria-haspopup="true"
+                  aria-expanded={catDrop}
                 >
                   <span>Categories</span>
-                  <FaChevronDown className="text-[10px] transition-transform group-hover:rotate-180 text-stone-400" />
+                  <FaChevronDown
+                    className={`text-[10px] text-stone-400 transition-transform duration-200 ${catDrop ? "rotate-180" : ""}`}
+                  />
                 </button>
-
                 <div
-                  onMouseLeave={() => setCategoryDropdownOpen(false)}
-                  className={`absolute left-0 top-full mt-1 w-52 bg-white rounded-xl shadow-xl border border-stone-100 py-2 transition-all duration-200 z-50 ${
-                    categoryDropdownOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2 pointer-events-none"
+                  className={`absolute left-0 top-full mt-1 w-52 bg-white rounded-xl shadow-xl border border-stone-100 py-2 z-50 transition-all duration-200 ${
+                    catDrop ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible pointer-events-none"
                   }`}
                 >
-                  {categoriesList.map((cat, idx) => (
+                  {CATEGORIES.map((cat, i) => (
                     <Link
-                      key={idx}
+                      key={i}
                       to={cat.path}
-                      onClick={() => setCategoryDropdownOpen(false)}
+                      onClick={() => setCatDrop(false)}
                       className="block px-4 py-2.5 text-sm text-stone-600 hover:text-[#1E3A2F] hover:bg-[#FAF8F5] transition-colors font-medium"
                     >
                       {cat.name}
@@ -156,32 +226,23 @@ function Navbar() {
                 </div>
               </div>
 
-              <NavLink to="/about" className={navLinkClass}>
-                About
-              </NavLink>
-              <NavLink to="/contact" className={navLinkClass}>
-                Contact
-              </NavLink>
+              <NavLink to="/about"   className={navLink}>About</NavLink>
+              <NavLink to="/contact" className={navLink}>Contact</NavLink>
             </nav>
 
-            {/* Live Search Bar (Desktop) */}
-            <div className="hidden md:flex flex-1 max-w-xs lg:max-w-sm mx-2">
-              <form onSubmit={handleSearchSubmit} className="relative w-full">
+            {/* ── DESKTOP SEARCH ── */}
+            <div className="hidden md:flex flex-1 min-w-0 max-w-xs lg:max-w-sm mx-2">
+              <form onSubmit={handleSearchSubmit} className="relative w-full" role="search">
                 <input
-                  type="text"
-                  placeholder="Search cookware, stove, grinder..."
+                  type="search"
+                  placeholder="Search cookware, stove, grinder…"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  onFocus={() => {
-                    if (location.pathname !== "/products") {
-                      // allow search typing without immediate forced navigation, but on submit goes to /products
-                    }
-                  }}
                   className="w-full bg-[#FAF8F5] border border-stone-200 text-stone-800 text-sm rounded-full pl-10 pr-4 py-2.5 focus:outline-none focus:border-[#1E3A2F] focus:bg-white focus:ring-2 focus:ring-[#1E3A2F]/10 transition-all placeholder:text-stone-400"
                 />
                 <button
                   type="submit"
-                  aria-label="Submit search"
+                  aria-label="Search"
                   className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-[#1E3A2F] transition-colors"
                 >
                   <FaSearch className="text-sm" />
@@ -189,114 +250,114 @@ function Navbar() {
               </form>
             </div>
 
-            {/* Right Action Icons Group */}
-            <div className="flex items-center gap-2 sm:gap-4" ref={dropdownRef}>
-              
-              {/* Mobile Search Toggle */}
+            {/* ── RIGHT ICONS ── */}
+            <div className="flex items-center gap-1 sm:gap-2 ml-auto shrink-0" ref={dropRef}>
+
+              {/* Mobile search toggle */}
               <button
                 type="button"
-                aria-label="Open search"
-                onClick={() => setSearchOpenMobile(!searchOpenMobile)}
-                className="md:hidden w-10 h-10 rounded-full flex items-center justify-center text-stone-600 hover:bg-stone-100 transition-colors"
+                aria-label={searchMobile ? "Close search" : "Open search"}
+                onClick={() => { setSearchMobile((v) => !v); setMobileOpen(false); }}
+                className="md:hidden w-9 h-9 rounded-full flex items-center justify-center text-stone-600 hover:bg-stone-100 transition-colors"
               >
-                <FaSearch className="text-base" />
+                {searchMobile ? <FaTimes className="text-base" /> : <FaSearch className="text-base" />}
               </button>
 
-              {/* Wishlist Icon */}
+              {/* Wishlist */}
               <Link
                 to="/wishlist"
-                aria-label="View wishlist"
-                className="relative w-10 h-10 rounded-full flex items-center justify-center text-stone-700 hover:text-[#C05621] hover:bg-stone-100/80 transition-colors"
+                aria-label={`Wishlist (${wishlistCount} items)`}
+                className="relative w-9 h-9 rounded-full flex items-center justify-center text-stone-700 hover:text-[#C05621] hover:bg-stone-100/80 transition-colors"
               >
-                <FaHeart className="text-lg" />
+                <FaHeart className="text-base sm:text-lg" />
                 {wishlistCount > 0 && (
-                  <span className="absolute 1 top-1 right-1 w-4 h-4 bg-[#C05621] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-xs">
+                  <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-[#C05621] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-xs">
                     {wishlistCount > 9 ? "9+" : wishlistCount}
                   </span>
                 )}
               </Link>
 
-              {/* Shopping Cart Icon */}
+              {/* Cart */}
               <Link
                 to="/cart"
-                aria-label="View shopping cart"
-                className="relative w-10 h-10 rounded-full flex items-center justify-center text-stone-700 hover:text-[#1E3A2F] hover:bg-stone-100/80 transition-colors"
+                aria-label={`Cart (${totalItems} items)`}
+                className="relative w-9 h-9 rounded-full flex items-center justify-center text-stone-700 hover:text-[#1E3A2F] hover:bg-stone-100/80 transition-colors"
               >
-                <FaShoppingCart className="text-lg" />
+                <FaShoppingCart className="text-base sm:text-lg" />
                 {totalItems > 0 && (
-                  <span className="absolute top-1 right-1 w-4 h-4 bg-[#1E3A2F] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-xs">
+                  <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-[#1E3A2F] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-xs">
                     {totalItems > 9 ? "9+" : totalItems}
                   </span>
                 )}
               </Link>
 
-              {/* Orders Icon (If Authenticated) */}
+              {/* Orders icon – only authenticated, hidden on small mobile */}
               {isAuthenticated && (
                 <Link
                   to="/orders"
-                  aria-label="My orders"
+                  aria-label="My Orders"
                   title="My Orders"
-                  className="hidden sm:flex relative w-10 h-10 rounded-full items-center justify-center text-stone-700 hover:text-[#1E3A2F] hover:bg-stone-100/80 transition-colors"
+                  className="hidden sm:flex w-9 h-9 rounded-full items-center justify-center text-stone-700 hover:text-[#1E3A2F] hover:bg-stone-100/80 transition-colors"
                 >
-                  <FaShippingFast className="text-lg" />
+                  <FaShippingFast className="text-base sm:text-lg" />
                 </Link>
               )}
 
-              {/* User Account / Auth Dropdown */}
+              {/* User account button / login */}
               <div className="relative">
                 {isAuthenticated ? (
-                  <div>
+                  <>
                     <button
-                      onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                      className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full border border-stone-200 bg-stone-50 hover:bg-stone-100 text-stone-800 text-xs font-medium transition-all"
+                      onClick={() => setUserDrop((v) => !v)}
+                      className="flex items-center gap-1.5 pl-1.5 pr-2.5 py-1.5 rounded-full border border-stone-200 bg-stone-50 hover:bg-stone-100 text-stone-800 text-xs font-medium transition-all"
+                      aria-haspopup="true"
+                      aria-expanded={userDrop}
+                      aria-label="User account menu"
                     >
-                      <div className="w-6 h-6 rounded-full bg-[#1E3A2F] text-white flex items-center justify-center text-[10px] font-bold">
+                      <div className="w-6 h-6 rounded-full bg-[#1E3A2F] text-white flex items-center justify-center text-[10px] font-bold shrink-0">
                         {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
                       </div>
-                      <span className="max-w-[80px] truncate hidden sm:inline">
+                      <span className="max-w-[72px] truncate hidden sm:inline">
                         {user?.name || "Account"}
                       </span>
-                      <FaChevronDown className="text-[9px] text-stone-500" />
+                      <FaChevronDown
+                        className={`text-[9px] text-stone-500 transition-transform duration-150 ${userDrop ? "rotate-180" : ""}`}
+                      />
                     </button>
 
-                    {/* Account Dropdown Menu */}
-                    {userDropdownOpen && (
+                    {/* Account dropdown */}
+                    {userDrop && (
                       <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-stone-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                         <div className="px-4 py-3 border-b border-stone-100">
-                          <p className="text-xs text-stone-500">Signed in as</p>
-                          <p className="text-sm font-semibold text-stone-800 truncate">
-                            {user?.name || user?.email}
-                          </p>
-                          <p className="text-xs text-stone-400 truncate">{user?.email}</p>
+                          <p className="text-[11px] text-stone-500">Signed in as</p>
+                          <p className="text-sm font-semibold text-stone-800 truncate">{user?.name || user?.email}</p>
+                          <p className="text-[11px] text-stone-400 truncate">{user?.email}</p>
                         </div>
 
                         {user?.role === "admin" && (
                           <Link
                             to="/dashboard"
-                            onClick={() => setUserDropdownOpen(false)}
+                            onClick={() => setUserDrop(false)}
                             className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-amber-700 hover:bg-amber-50 font-medium"
                           >
-                            <FaShieldAlt className="text-sm" />
-                            Admin Dashboard
+                            <FaShieldAlt className="text-sm" /> Admin Dashboard
                           </Link>
                         )}
 
                         <Link
                           to="/orders"
-                          onClick={() => setUserDropdownOpen(false)}
+                          onClick={() => setUserDrop(false)}
                           className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-stone-700 hover:bg-stone-50 font-medium"
                         >
-                          <FaBoxes className="text-sm text-stone-400" />
-                          My Orders
+                          <FaBoxes className="text-sm text-stone-400" /> My Orders
                         </Link>
 
                         <Link
                           to="/wishlist"
-                          onClick={() => setUserDropdownOpen(false)}
+                          onClick={() => setUserDrop(false)}
                           className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-stone-700 hover:bg-stone-50 font-medium"
                         >
-                          <FaHeart className="text-sm text-stone-400" />
-                          Wishlist ({wishlistCount})
+                          <FaHeart className="text-sm text-stone-400" /> Wishlist ({wishlistCount})
                         </Link>
 
                         <div className="border-t border-stone-100 mt-1 pt-1">
@@ -304,18 +365,17 @@ function Navbar() {
                             onClick={handleLogout}
                             className="flex items-center gap-2.5 w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 font-medium transition-colors"
                           >
-                            <FaSignOutAlt className="text-sm" />
-                            Log Out
+                            <FaSignOutAlt className="text-sm" /> Log Out
                           </button>
                         </div>
                       </div>
                     )}
-                  </div>
+                  </>
                 ) : (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5">
                     <Link
                       to="/loginpage"
-                      className="px-4 py-2 text-xs sm:text-sm font-semibold text-stone-700 hover:text-stone-900 transition-colors"
+                      className="px-3 py-1.5 text-xs sm:text-sm font-semibold text-stone-700 hover:text-stone-900 transition-colors"
                     >
                       Log In
                     </Link>
@@ -329,151 +389,188 @@ function Navbar() {
                 )}
               </div>
 
-              {/* Mobile Menu Hamburger */}
-              <button
-                type="button"
-                aria-label="Toggle navigation menu"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center text-stone-700 hover:bg-stone-100 transition-colors ml-1"
-              >
-                {mobileMenuOpen ? <FaTimes className="text-xl" /> : <FaBars className="text-xl" />}
-              </button>
-
+              
             </div>
           </div>
 
-          {/* Mobile Search Input Drawer (Visible when toggled) */}
-          {searchOpenMobile && (
-            <div className="md:hidden pb-4 pt-1 animate-in fade-in duration-150">
-              <form onSubmit={handleSearchSubmit} className="relative w-full">
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full bg-[#FAF8F5] border border-stone-300 text-stone-800 text-sm rounded-full pl-10 pr-4 py-2.5 focus:outline-none focus:border-[#1E3A2F] focus:ring-1 focus:ring-[#1E3A2F]"
-                  autoFocus
-                />
-                <button
-                  type="submit"
-                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400"
-                >
-                  <FaSearch />
-                </button>
-              </form>
-            </div>
-          )}
+          {/* ── MOBILE SEARCH DRAWER ── */}
+          <div
+            className={`md:hidden overflow-hidden transition-all duration-300 ${
+              searchMobile ? "max-h-20 opacity-100 pb-3 pt-1" : "max-h-0 opacity-0"
+            }`}
+          >
+            <form onSubmit={handleSearchSubmit} className="relative w-full" role="search">
+              <input
+                type="search"
+                placeholder="Search products…"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full bg-[#FAF8F5] border border-stone-300 text-stone-800 text-sm rounded-full pl-10 pr-4 py-2.5 focus:outline-none focus:border-[#1E3A2F] focus:ring-1 focus:ring-[#1E3A2F]"
+                autoFocus={searchMobile}
+              />
+              <button type="submit" aria-label="Search" className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400">
+                <FaSearch className="text-sm" />
+              </button>
+            </form>
+          </div>
         </div>
 
-        {/* Mobile Navigation Drawer */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-stone-200 bg-white/98 backdrop-blur-md px-4 py-6 shadow-xl animate-in fade-in slide-in-from-top-4 duration-200">
-            <nav className="flex flex-col space-y-3">
-              <NavLink
-                to="/"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-4 py-2.5 text-base font-medium rounded-xl text-stone-800 hover:bg-stone-50"
-              >
-                Home
-              </NavLink>
+        {/* ══════════════ MOBILE DRAWER MENU ══════════════
+            CSS-driven slide transition — no JS-only render flash        */}
+        <div
+          id="mobile-nav"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Navigation menu"
+          className={`lg:hidden fixed inset-x-0 bottom-0 z-40 flex flex-col bg-white border-t border-stone-200 overflow-y-auto transition-transform duration-300 ease-in-out ${
+            mobileOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full"
+          }`}
+          style={{ top: "calc(24px + 64px)" /* announcement(24) + header(64) */}}
+        >
+          {/* Backdrop overlay when open */}
+          {mobileOpen && (
+            <div
+              className="fixed inset-0 -z-10 bg-black/30 backdrop-blur-[1px]"
+              onClick={closeMobile}
+              aria-hidden="true"
+            />
+          )}
 
-              <NavLink
-                to="/products"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-4 py-2.5 text-base font-medium rounded-xl text-stone-800 hover:bg-stone-50"
-              >
-                Shop All Products
-              </NavLink>
+          <nav className="flex-1 px-4 py-5 space-y-1" aria-label="Mobile navigation">
 
-              <div className="pl-4 py-1 space-y-1 border-l-2 border-stone-100 ml-4">
-                <p className="text-xs uppercase font-bold tracking-wider text-stone-400 mb-2">
-                  Top Categories
-                </p>
-                {categoriesList.slice(1).map((cat, idx) => (
-                  <Link
-                    key={idx}
-                    to={cat.path}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="block py-1.5 text-sm text-stone-600 hover:text-[#C05621]"
-                  >
-                    {cat.name}
-                  </Link>
-                ))}
+            {/* Brand row inside drawer */}
+            <div className="flex items-center gap-2 pb-4 mb-2 border-b border-stone-100">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#1E3A2F] to-[#2E5848] flex items-center justify-center text-white shadow shrink-0">
+                <FaStore className="text-base text-emerald-200" />
               </div>
+              <div>
+                <p className="text-sm font-extrabold tracking-tight text-stone-900">
+                  LIYANA <span className="text-[#C05621]">METALS</span>
+                </p>
+                <p className="text-[10px] text-stone-500 tracking-wider uppercase">Kitchen &amp; Living Essentials</p>
+              </div>
+            </div>
 
-              <NavLink
-                to="/about"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-4 py-2.5 text-base font-medium rounded-xl text-stone-800 hover:bg-stone-50"
+            {/* Main links */}
+            <NavLink to="/"         onClick={closeMobile} className={mobileLink}>
+              <FaHome className="text-stone-400 shrink-0" /> <span>Home</span>
+            </NavLink>
+
+            <NavLink to="/products" onClick={closeMobile} className={mobileLink}>
+              <FaStore className="text-stone-400 shrink-0" /> <span>Shop All Products</span>
+            </NavLink>
+
+            {/* Categories accordion */}
+            <div>
+              <button
+                onClick={() => setCatMobile((v) => !v)}
+                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-stone-700 hover:bg-stone-50 transition-colors"
+                aria-expanded={catMobile}
               >
-                About Us
-              </NavLink>
+                <span className="flex items-center gap-3">
+                  <FaBoxes className="text-stone-400 shrink-0" />
+                  <span>Categories</span>
+                </span>
+                <FaChevronDown
+                  className={`text-stone-400 text-[11px] transition-transform duration-200 ${catMobile ? "rotate-180" : ""}`}
+                />
+              </button>
 
-              <NavLink
-                to="/contact"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-4 py-2.5 text-base font-medium rounded-xl text-stone-800 hover:bg-stone-50"
+              <div
+                className={`overflow-hidden transition-all duration-250 ${
+                  catMobile ? "max-h-80 mt-1" : "max-h-0"
+                }`}
               >
-                Contact
-              </NavLink>
+                <div className="ml-7 pl-4 border-l-2 border-stone-100 space-y-0.5">
+                  {CATEGORIES.map((cat, i) => (
+                    <Link
+                      key={i}
+                      to={cat.path}
+                      onClick={closeMobile}
+                      className="block py-2 px-3 text-sm text-stone-600 hover:text-[#1E3A2F] hover:bg-stone-50 rounded-lg transition-colors font-medium"
+                    >
+                      {cat.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
 
-              {isAuthenticated && (
-                <>
-                  <NavLink
-                    to="/orders"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="px-4 py-2.5 text-base font-medium rounded-xl text-stone-800 hover:bg-stone-50 flex items-center justify-between"
-                  >
-                    <span>My Orders</span>
-                    <FaShippingFast className="text-stone-400" />
-                  </NavLink>
+            <NavLink to="/about"   onClick={closeMobile} className={mobileLink}>
+              <span className="w-5 shrink-0 flex justify-center text-stone-400">ℹ</span>
+              <span>About Us</span>
+            </NavLink>
 
-                  <NavLink
-                    to="/wishlist"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="px-4 py-2.5 text-base font-medium rounded-xl text-stone-800 hover:bg-stone-50 flex items-center justify-between"
-                  >
-                    <span>Wishlist</span>
-                    <span className="bg-stone-100 text-stone-700 text-xs px-2 py-0.5 rounded-full font-semibold">
+            <NavLink to="/contact" onClick={closeMobile} className={mobileLink}>
+              <FaPhone className="text-stone-400 shrink-0" /> <span>Contact</span>
+            </NavLink>
+
+            {/* Authenticated extras */}
+            {isAuthenticated && (
+              <>
+                <NavLink to="/orders"   onClick={closeMobile} className={mobileLink}>
+                  <FaShippingFast className="text-stone-400 shrink-0" />
+                  <span>My Orders</span>
+                </NavLink>
+                <NavLink to="/wishlist" onClick={closeMobile} className={mobileLink}>
+                  <FaHeart className="text-stone-400 shrink-0" />
+                  <span>Wishlist</span>
+                  {wishlistCount > 0 && (
+                    <span className="ml-auto bg-[#C05621]/10 text-[#C05621] text-xs px-2 py-0.5 rounded-full font-bold">
                       {wishlistCount}
                     </span>
+                  )}
+                </NavLink>
+                {user?.role === "admin" && (
+                  <NavLink to="/dashboard" onClick={closeMobile} className={mobileLink}>
+                    <FaShieldAlt className="text-amber-600 shrink-0" />
+                    <span className="text-amber-700 font-semibold">Admin Dashboard</span>
                   </NavLink>
-                </>
-              )}
-
-              <div className="pt-4 border-t border-stone-100 flex flex-col gap-2">
-                {isAuthenticated ? (
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="w-full py-3 text-center bg-stone-100 text-red-600 font-semibold rounded-xl hover:bg-red-50 transition"
-                  >
-                    Log Out
-                  </button>
-                ) : (
-                  <div className="grid grid-cols-2 gap-3">
-                    <Link
-                      to="/loginpage"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="py-2.5 text-center border border-stone-300 text-stone-800 font-semibold rounded-xl hover:bg-stone-50 text-sm"
-                    >
-                      Log In
-                    </Link>
-                    <Link
-                      to="/register"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="py-2.5 text-center bg-[#1E3A2F] text-white font-semibold rounded-xl hover:bg-[#284f3f] text-sm"
-                    >
-                      Register
-                    </Link>
-                  </div>
                 )}
+              </>
+            )}
+          </nav>
+
+          {/* Bottom auth section */}
+          <div className="px-4 py-5 border-t border-stone-100 bg-[#FAF8F5]">
+            {isAuthenticated ? (
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 px-1">
+                  <div className="w-9 h-9 rounded-full bg-[#1E3A2F] text-white flex items-center justify-center text-sm font-bold shrink-0">
+                    {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-stone-900 truncate">{user?.name}</p>
+                    <p className="text-xs text-stone-500 truncate">{user?.email}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => { handleLogout(); closeMobile(); }}
+                  className="w-full py-3 flex items-center justify-center gap-2 bg-red-50 text-red-600 font-semibold rounded-xl hover:bg-red-100 transition text-sm"
+                >
+                  <FaSignOutAlt /> Log Out
+                </button>
               </div>
-            </nav>
+            ) : (
+              <div className="grid grid-cols-2 gap-3">
+                <Link
+                  to="/loginpage"
+                  onClick={closeMobile}
+                  className="py-3 text-center border border-stone-300 text-stone-800 font-semibold rounded-xl hover:bg-stone-100 text-sm transition-colors"
+                >
+                  Log In
+                </Link>
+                <Link
+                  to="/register"
+                  onClick={closeMobile}
+                  className="py-3 text-center bg-[#1E3A2F] text-white font-semibold rounded-xl hover:bg-[#284f3f] text-sm transition-colors shadow-xs"
+                >
+                  Register
+                </Link>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </header>
     </>
   );

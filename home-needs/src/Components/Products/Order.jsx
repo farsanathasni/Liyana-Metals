@@ -10,13 +10,16 @@ import {
   FaShieldAlt,
   FaTruck,
   FaCheckCircle,
-  FaLock,
   FaCreditCard,
   FaMoneyBillWave,
   FaMobileAlt,
   FaUser,
   FaPhoneAlt,
   FaMapMarkerAlt,
+  FaClock,
+  FaExclamationTriangle,
+  FaArrowRight,
+  FaBoxes,
 } from "react-icons/fa";
 
 function Order() {
@@ -33,6 +36,7 @@ function Order() {
   });
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
+  const [confirmedOrder, setConfirmedOrder] = useState(null);
 
   // Pre-fill user details if available
   useEffect(() => {
@@ -61,6 +65,133 @@ function Order() {
         <div className="flex-1 flex items-center justify-center text-stone-500 font-medium">
           Preparing checkout...
         </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // If order was successfully confirmed, show the Confirmation / Order Placed screen
+  if (confirmedOrder) {
+    const isPaid = (confirmedOrder.paymentStatus || "").toLowerCase() === "paid";
+    const orderDate = new Date(confirmedOrder.createdAt || Date.now()).toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    return (
+      <div className="min-h-screen bg-[#FAF8F5] flex flex-col">
+        <Navbar />
+
+        <main className="flex-1 py-12 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto space-y-6">
+            
+            {/* Success Hero Banner */}
+            <div className="bg-white rounded-3xl p-8 border border-stone-200/80 shadow-md text-center space-y-4">
+              <div className="w-16 h-16 rounded-full bg-emerald-100 text-[#1E3A2F] flex items-center justify-center text-3xl mx-auto shadow-inner">
+                <FaCheckCircle />
+              </div>
+              <div>
+                <span className="inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest bg-emerald-50 text-emerald-800 border border-emerald-200 mb-2">
+                  Order Confirmed
+                </span>
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight">
+                  Thank You, {confirmedOrder.customer?.name || "Customer"}!
+                </h1>
+                <p className="text-stone-500 text-sm mt-1">
+                  Your order has been placed with Liyana Metals and is being processed for dispatch.
+                </p>
+              </div>
+
+              {/* 4 Key Details Cards */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 text-left">
+                <div className="bg-[#FAF8F5] p-3.5 rounded-2xl border border-stone-200/60">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block">
+                    Order ID
+                  </span>
+                  <span className="font-mono font-bold text-xs sm:text-sm text-stone-900 truncate block mt-0.5">
+                    #{confirmedOrder._id?.slice(-8).toUpperCase() || "CONFIRMED"}
+                  </span>
+                </div>
+
+                <div className="bg-[#FAF8F5] p-3.5 rounded-2xl border border-stone-200/60">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block">
+                    Date & Time
+                  </span>
+                  <span className="font-bold text-xs sm:text-sm text-stone-900 block mt-0.5">
+                    {orderDate}
+                  </span>
+                </div>
+
+                <div className="bg-[#FAF8F5] p-3.5 rounded-2xl border border-stone-200/60">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block">
+                    Payment Method
+                  </span>
+                  <span className="font-bold text-xs sm:text-sm text-stone-900 block mt-0.5">
+                    {confirmedOrder.payment === "COD" ? "Cash on Delivery" : "Razorpay"}
+                  </span>
+                </div>
+
+                <div className="bg-[#FAF8F5] p-3.5 rounded-2xl border border-stone-200/60">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block">
+                    Payment Status
+                  </span>
+                  <div className="mt-0.5">
+                    {isPaid ? (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-100 text-emerald-800">
+                        <FaCheckCircle className="text-[10px]" /> Paid
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-black bg-amber-100 text-amber-800">
+                        <FaClock className="text-[10px]" /> Pending
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Delivery Address */}
+              <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-stone-200/60 text-left text-xs space-y-1">
+                <span className="font-bold text-stone-700 block">Delivery Address:</span>
+                <p className="text-stone-600">
+                  {confirmedOrder.customer?.address}
+                </p>
+                <p className="text-stone-500">
+                  Contact Phone: <strong>{confirmedOrder.customer?.phone}</strong>
+                </p>
+              </div>
+
+              {/* Total Summary */}
+              <div className="flex items-center justify-between p-4 bg-emerald-50/60 rounded-2xl border border-emerald-100">
+                <span className="font-bold text-stone-700 text-sm">Total Order Value</span>
+                <span className="text-2xl font-black text-[#1E3A2F]">
+                  ₹{Number(confirmedOrder.total || 0).toLocaleString("en-IN")}
+                </span>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+                <button
+                  onClick={() => navigate("/orders")}
+                  className="w-full sm:w-auto px-6 py-3.5 bg-[#1E3A2F] hover:bg-[#284f3f] text-white font-bold text-sm rounded-xl transition-all shadow-md flex items-center justify-center gap-2"
+                >
+                  <FaBoxes /> View My Orders
+                </button>
+                <button
+                  onClick={() => navigate("/products")}
+                  className="w-full sm:w-auto px-6 py-3.5 bg-white hover:bg-stone-50 text-stone-800 font-bold text-sm rounded-xl border border-stone-200 transition-colors"
+                >
+                  Continue Shopping
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+        </main>
+
         <Footer />
       </div>
     );
@@ -111,10 +242,11 @@ function Order() {
       }
 
       setSubmitting(true);
+      setFormError("");
 
-      // COD Flow
+      // -------------------- COD Flow --------------------
       if (form.payment === "COD") {
-        const order = {
+        const orderData = {
           userId: user._id,
           items: cart.map((i) => ({
             productId: i.productId?._id || i.productId,
@@ -126,26 +258,27 @@ function Order() {
           total: grandTotal,
           customer: form,
           payment: "COD",
+          paymentStatus: "pending",
           status: "placed",
         };
 
-        await placeOrder(order);
+        const created = await placeOrder(orderData);
         clearCart();
-        alert("Order placed successfully! 🎉 Thank you for shopping with Home Needs.");
-        navigate("/orders");
+        setConfirmedOrder(created || orderData);
         return;
       }
 
-      // Online Payment Flow (Razorpay)
+      // -------------------- Online Payment Flow (Razorpay) --------------------
       const { data } = await api.post("/payment/create", {
         cart,
         userId: user._id,
+        grandTotal,
       });
 
       const razorpayOrder = data.order;
 
       if (!window.Razorpay) {
-        alert("Razorpay SDK could not be loaded. Please check your internet connection.");
+        alert("Razorpay checkout SDK could not be loaded. Please check your internet connection.");
         setSubmitting(false);
         return;
       }
@@ -154,8 +287,8 @@ function Order() {
         key: import.meta.env.VITE_PAYMENT_KEY,
         amount: razorpayOrder.amount,
         currency: razorpayOrder.currency,
-        name: "Home Needs",
-        description: "Order Payment",
+        name: "Liyana Metals",
+        description: "Kitchenware & Home Essentials",
         order_id: razorpayOrder.id,
         prefill: {
           name: form.name,
@@ -167,7 +300,7 @@ function Order() {
         },
         handler: async function (response) {
           try {
-            await api.post("/payment/verify", {
+            const verifyRes = await api.post("/payment/verify", {
               order_id: razorpayOrder.id,
               payment_id: response.razorpay_payment_id,
               signature: response.razorpay_signature,
@@ -175,15 +308,23 @@ function Order() {
               cartItems: cart,
               total: grandTotal,
               userId: user._id,
-              payment: form.payment,
+              payment: "Razorpay",
             });
 
             clearCart();
-            alert("Payment Successful! 🎉 Your order has been placed.");
-            navigate("/orders");
+            setConfirmedOrder(verifyRes.data.order || {
+              _id: razorpayOrder.id,
+              total: grandTotal,
+              customer: form,
+              payment: "Razorpay",
+              paymentStatus: "paid",
+              createdAt: new Date().toISOString(),
+            });
           } catch (verifyErr) {
-            console.error(verifyErr);
-            alert("Payment verification failed. Please contact support.");
+            console.error("Verification error:", verifyErr);
+            setFormError("Payment signature verification failed. Please contact customer support.");
+          } finally {
+            setSubmitting(false);
           }
         },
         modal: {
@@ -194,11 +335,32 @@ function Order() {
       };
 
       const rzp = new window.Razorpay(options);
+
+      // Handle payment failure event (declined cards, bank errors, etc.)
+      rzp.on("payment.failed", async function (response) {
+        setSubmitting(false);
+        const reason = response.error?.description || "Payment was declined by the issuing bank.";
+        setFormError(`Payment Failed: ${reason}`);
+
+        try {
+          await api.post("/payment/failure", {
+            order_id: razorpayOrder.id,
+            userId: user._id,
+            customer: form,
+            cartItems: cart,
+            total: grandTotal,
+            payment: "Razorpay",
+            reason,
+          });
+        } catch (failErr) {
+          console.error("Failed to record failure in backend:", failErr);
+        }
+      });
+
       rzp.open();
     } catch (err) {
-      console.error(err);
-      alert(err.response?.data?.message || "Payment process could not be initiated.");
-    } finally {
+      console.error("Checkout initiation error:", err);
+      setFormError(err.response?.data?.message || "Payment process could not be initiated.");
       setSubmitting(false);
     }
   };
@@ -223,8 +385,9 @@ function Order() {
           </div>
 
           {formError && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 text-sm font-medium rounded-2xl">
-              {formError}
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 text-sm font-medium rounded-2xl flex items-center gap-3">
+              <FaExclamationTriangle className="text-red-500 text-base flex-shrink-0" />
+              <span>{formError}</span>
             </div>
           )}
 
@@ -312,10 +475,10 @@ function Order() {
                       Payment Mode
                     </h2>
                   </div>
-                  <span className="text-xs text-stone-400">Safe & encrypted</span>
+                  <span className="text-xs text-stone-400">Safe & 256-Bit Encrypted</span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   
                   {/* COD Option */}
                   <label
@@ -340,15 +503,15 @@ function Order() {
                       </div>
                     </div>
                     <div>
-                      <p className="font-bold text-sm text-stone-900">Cash on Delivery</p>
-                      <p className="text-[11px] text-stone-500 mt-0.5">Pay upon parcel arrival</p>
+                      <p className="font-bold text-sm text-stone-900">Cash on Delivery (COD)</p>
+                      <p className="text-[11px] text-stone-500 mt-0.5">Pay upon delivery. Status: Pending until collected.</p>
                     </div>
                   </label>
 
-                  {/* UPI Option */}
+                  {/* Online Razorpay Option */}
                   <label
                     className={`relative p-4 rounded-2xl border-2 flex flex-col justify-between cursor-pointer transition-all ${
-                      form.payment === "UPI"
+                      form.payment === "Razorpay"
                         ? "border-[#1E3A2F] bg-emerald-50/40 shadow-xs"
                         : "border-stone-200 hover:border-stone-300 bg-white"
                     }`}
@@ -356,48 +519,23 @@ function Order() {
                     <input
                       type="radio"
                       name="payment"
-                      value="UPI"
-                      checked={form.payment === "UPI"}
+                      value="Razorpay"
+                      checked={form.payment === "Razorpay"}
                       onChange={handleChange}
                       className="sr-only"
                     />
                     <div className="flex items-center justify-between mb-3">
-                      <FaMobileAlt className="text-xl text-[#C05621]" />
-                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${form.payment === "UPI" ? "border-[#1E3A2F]" : "border-stone-300"}`}>
-                        {form.payment === "UPI" && <div className="w-2 h-2 rounded-full bg-[#1E3A2F]" />}
+                      <div className="flex items-center gap-2">
+                        <FaMobileAlt className="text-lg text-[#C05621]" />
+                        <FaCreditCard className="text-lg text-[#1E3A2F]" />
+                      </div>
+                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${form.payment === "Razorpay" ? "border-[#1E3A2F]" : "border-stone-300"}`}>
+                        {form.payment === "Razorpay" && <div className="w-2 h-2 rounded-full bg-[#1E3A2F]" />}
                       </div>
                     </div>
                     <div>
-                      <p className="font-bold text-sm text-stone-900">UPI Instant</p>
-                      <p className="text-[11px] text-stone-500 mt-0.5">GPay, PhonePe, Paytm</p>
-                    </div>
-                  </label>
-
-                  {/* Card Option */}
-                  <label
-                    className={`relative p-4 rounded-2xl border-2 flex flex-col justify-between cursor-pointer transition-all ${
-                      form.payment === "Card"
-                        ? "border-[#1E3A2F] bg-emerald-50/40 shadow-xs"
-                        : "border-stone-200 hover:border-stone-300 bg-white"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="Card"
-                      checked={form.payment === "Card"}
-                      onChange={handleChange}
-                      className="sr-only"
-                    />
-                    <div className="flex items-center justify-between mb-3">
-                      <FaCreditCard className="text-xl text-stone-700" />
-                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${form.payment === "Card" ? "border-[#1E3A2F]" : "border-stone-300"}`}>
-                        {form.payment === "Card" && <div className="w-2 h-2 rounded-full bg-[#1E3A2F]" />}
-                      </div>
-                    </div>
-                    <div>
-                      <p className="font-bold text-sm text-stone-900">Card / NetBanking</p>
-                      <p className="text-[11px] text-stone-500 mt-0.5">Debit, Credit & EMI</p>
+                      <p className="font-bold text-sm text-stone-900">Razorpay Secure Online</p>
+                      <p className="text-[11px] text-stone-500 mt-0.5">UPI, GPay, PhonePe, Cards, NetBanking. Verified instant.</p>
                     </div>
                   </label>
 
@@ -424,8 +562,9 @@ function Order() {
                       >
                         <div className="flex items-center gap-3">
                           <img
-                            src={prod.image || "/default-product.png"}
-                            alt={prod.name}
+                            src={prod.image || item.image || "/default-product.png"}
+                            alt={prod.name || item.name}
+                            onError={(e) => (e.target.src = "/default-product.png")}
                             className="w-12 h-12 rounded-xl object-contain bg-[#FAF8F5] p-1 border border-stone-100"
                           />
                           <div>
@@ -469,7 +608,7 @@ function Order() {
                     </p>
                   </div>
                   <span className="text-[11px] font-bold text-stone-500 uppercase">
-                    Mode: {form.payment}
+                    Mode: {form.payment === "COD" ? "Cash on Delivery" : "Razorpay"}
                   </span>
                 </div>
 
@@ -482,10 +621,10 @@ function Order() {
                   <FaCheckCircle className="text-emerald-300" />
                   <span>
                     {submitting
-                      ? "Processing..."
+                      ? "Processing Transaction..."
                       : form.payment === "COD"
                       ? "Confirm & Place COD Order"
-                      : "Pay with Razorpay"}
+                      : "Pay Securely with Razorpay"}
                   </span>
                 </button>
 
